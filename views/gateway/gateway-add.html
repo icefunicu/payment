@@ -1,0 +1,57 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+{% import "../shared/forms.html" as forms %}
+
+<h2 class="ui header">{{__('gateway.new-gateway')}}</h2>
+
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false" method="post">
+
+    {{ forms.text('gateway-name',__('gateway.app-name'),'',__('gateway.app-name-help')) }}
+
+    <div class="field">
+        <label>{{__('gateway.app-code')}}:</label>
+        <div class="ui fluid input">
+            <pre id="editor" style=" height: 400px;width: 100%;font-size: 14px;">{{__('gateway.code-js-help')|safe}}</pre>
+        </div>
+    </div>
+    
+    {{ forms.tip(__('gateway.app-page-help')|safe,'','','green') }}
+    {{ forms.tip(__('gateway.code-example-help')|safe,'','','orange') }}
+
+    {% include '../shared/components/slot_submit.html' %}
+    <script src="/code/ace.js"></script>
+    <script>
+        var editor = ace.edit("editor",{
+            mode: "ace/mode/javascript",
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            theme:'ace/theme/sqlserver'
+        });
+    
+        sals.use(['ajaxForm'],function(){
+            $('form.post-form').ajaxForm({
+                beforeSubmit:function(formData){
+                    formData[formData.length] = {name: 'gateway-code', value: editor.getValue(), type: 'text', required: true}
+                },
+                complete:function(){
+                    $('.profile-save').removeClass('loading');
+                    $('form.post-form').removeClass('loading');
+                },
+                error: function (data) {
+                    top.layout.notify(data.statusText, { title: data.status, class: 'error' });
+                },
+                success: function (res) { 
+                    if (res.success) {
+                        top.layout.tip(res.message);
+                    } else {
+                        top.layout.notify(res.message, { class: 'error' });
+                    }
+                }
+        });
+        });
+    </script>
+</form>
+
+{%endblock%}

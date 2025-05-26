@@ -1,0 +1,23 @@
+{% extends './_layout.html' %}
+{% block content %}
+<div style="height:120px;">&nbsp;</div>
+<section class="mbr-section mbr-section--relative mbr-section--fixed-size"  data-rv-view="468" style="background-color: rgb(239, 239, 239);">
+    
+    <div class="mbr-section__container mbr-section__container--std-top-padding mbr-section__container--sm-bot-padding mbr-section-title container" style="padding-top: 93px;">
+        <div class="mbr-header mbr-header--center mbr-header--wysiwyg row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <h3 class="mbr-header__text">{{data.title}}</h3>
+                
+            </div>
+        </div>
+    </div>
+    <div class="mbr-section__container container" style="text-align:left"> 
+        <p class="lead">{{data.html|safe}}</p>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)https://static.ahc.ink/web/iframe20230428/webchat.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>合从</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="generator" content="合从">
+<link href="./hecong.css" rel="stylesheet">
+<link type="text/css" href="./OverlayScrollbars.css" rel="stylesheet">
+<script type="text/javascript" src="./OverlayScrollbars.min.js.下载"></script>
+<script>
+  window.emojiSmile = async(id, option, errHandle) => {
+    try {
+      let data = await import('https://pubres.aihecong.com/web/emoji/data.js')
+      let EmojiMart = await import('https://pubres.aihecong.com/web/emoji/index.js')
+      option.data = window.smileDate
+      const picker = new EmojiMart.Picker(option)
+      document.querySelector(id).innerHTML = ""
+      document.querySelector(id).appendChild(picker)
+    } catch (e) {
+      errHandle()
+    }
+  }
+</script>
+</head>
+<body>
+<div id="aihecong"><div data-reactroot="" style="display: flex; flex-direction: column; height: 100%;"><div style="height: 75px; background-color: rgb(33, 150, 243);"></div><div style="flex: 1 1 0%;"><div class="laodingbox"><div class="vertical-align" style="text-align: center; height: 100%;"><div class="loader vertical-align-middle loader-circle"></div></div></div></div><div style="height: 55px; background-color: rgb(255, 255, 255);"></div></div></div>
+<script type="text/javascript" src="./hecong.js.下载"></script>
+
+</body></html>

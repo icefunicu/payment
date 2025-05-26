@@ -1,0 +1,7 @@
+/runtime
+/node_modules
+/_runtime_
+/node_modules
+/package-lock.json
+/etc/db/*
+scripts/gateway/interfaces/*

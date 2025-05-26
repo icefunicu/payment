@@ -1,0 +1,24 @@
+{% extends './biz_base_layout.html' %}
+{% block content %}
+<h2>无权限</h2> 
+
+
+
+<blockquote class="bg-gray-light">
+    <p>您不是代理账户,没有子账户管理权限</p>
+    <p>如果您需要开设子账户,请联系您的管理员提升账户权限</p>
+    <p>升级为代理账户后,您不能使用本账号进行收款业务,但可以开设子账户进行收款业务</p>
+    <p>子账户的所有订单您都可以进行分润</p>
+</blockquote>
+
+<blockquote class="bg-danger">
+    <p>您可以在<code>通知与公告=>联系客服</code>中与管理员进行联系</p>
+    <p>或通过以下方式与管理员进行联系:</p>
+    {%if config['kf-phone']%}<p>客服电话:{{config['kf-phone']}}</p>{%endif%}
+    {%if config['kf-400']%}<p>400电话:{{config['kf-400']}}</p>{%endif%}
+    {%if config['kf-qq']%}<p>客服QQ:{{config['kf-qq']}}</p>{%endif%}
+    {%if config['kf-email']%}<p>客服邮箱:{{config['kf-email']}}</p>{%endif%}
+    {%if config['kf-mobile']%}<p>客服手机:{{config['kf-mobile']}}</p>{%endif%} 
+</blockquote>
+
+{% endblock %}

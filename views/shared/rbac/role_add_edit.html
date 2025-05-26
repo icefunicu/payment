@@ -1,0 +1,21 @@
+{% extends '../layout.html' %}
+
+{% import "../forms.html" as forms %}
+
+{% block content %}
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+    {{ forms.hidden('data_id',data['_id']) }} 
+
+    {{ forms.text('role-name',__('fields.role-name'),data['role-name'])}}
+
+    {{ forms.textarea('role-desc',__('fields.describe'),data['role-desc'])}} 
+
+    {{ forms.checkbox('role-used',__('fields.on-used'),data['role-used'],data['role-used'] == 'true')}}
+
+    {% include '../../shared/components/slot_submit.html' %}
+</form>
+
+<script type="text/javascript">
+    sals.use(['ajaxForm']);
+</script>
+{%endblock%}

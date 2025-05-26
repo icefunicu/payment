@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>{{config['site-name']}}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta name="description" content="franework" />
+    <meta name="keywords" content="ui-franework" />
+    <link rel="stylesheet" type="text/css" href="/public/css/semantic.min.css" />
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/semantic.min.js"></script>
+    <script type="text/javascript" src="/public/js/payment.min.js"></script>
+</head>
+
+<body>
+    <div class="ui container" style="padding:20px 0 0 0 ;">
+
+        <div class="ui piled teal segment">
+            <div class="ui container gird">
+                <div><img src="/public/pays/default.png" id="pay-image-logo" style="width:210px;height: 70px; " /></div>
+            </div>
+
+
+        </div>
+        <!-- pay body -->
+        <div class="ui message error-tip" style="display: none">
+            <div class="header error-title"></div>
+            <div class="error-message"></div>
+          </div>
+
+        <div class="ui loading  segment padded" id="pay-body" style="height:45%">
+            <div class="ui container text padded" id="pay-body-title" style="display: none">
+                <h2 class="ui header centered">订单号:<span id="pay-order-number">-</span></h2>
+                <h2 class="ui header centered blue">金额: <span id="pay-money-text">-</span> 元</h2>
+            </div>
+            <h2 class="ui header grey centered" id="pay-order-title" style="display:none ;"><span id="pay-order-title-text"></span></h2>
+            <!-- 扫码 -->
+            <div class="ui container text padded" id="pay-type-qrcode" style="display:none ;">
+                <div class="ui card centered">
+                    <img src="" class="ui image" id="pay-qr-image" />
+                </div>
+                <h3 class="ui header centered red">请使用 <span class="ui text teal" id="pay-qrcodr-app">-</span> 扫码付款
+                    <span class="ui text mini">(注意不能多付或少付)</span> </h3>
+                <h3 class="ui header centered red">二维码有效时间:<span id="pay-countdown-text">-</span> ; 失效后请勿支付</h3>
+            </div>
+            
+            <!-- 转账 -->
+            <div id="pay-type-transfer" class="ui container text padded" style="display:none ;">
+                <p>&nbsp;</p>
+                <h2 class="ui header centered">收款账号:<span id="pay-transfer-number">-</span><a class="ui button mini tertiary violet ">复制账号</a> </h2>
+                <h3 class="ui header centered red">请使用:<span id="pay-transfer-text" class="ui text teal">-</span>向收款账号转账</h3>
+                <h3 class="ui header centered red">转账完成后请点击&nbsp;&nbsp;&nbsp;&nbsp;<button class="ui button small green" type="button" id="pay-transfer-success">我已转账</button></h3>
+            </div>
+
+
+            <h4 class="ui header grey centered" id="pay-customer" style="display:none ;">客服:<span id="pay-customer-phone"></span></h4>
+        </div>
+        <!-- pay body -->
+    </div>
+    <script type="text/javascript">
+        var pay = new Payment();
+        window.onload = function () {
+            pay.Start('{{oid}}');
+        }
+    </script>
+</body>
+</html>

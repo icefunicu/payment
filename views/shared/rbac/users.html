@@ -1,0 +1,46 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+
+<div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    var columnDefs = [
+      { field: "row-number" },
+      { field: "user-text", header: "{{__('fields.nickname')}}" },
+      { field: "user-name", header: "{{__('fields.account')}}" },
+      { field: "user-desc", header: "{{__('fields.describe')}}" },
+      { field: "user-part", header: "{{__('fields.part-of-role')}}",formater:function(val){
+        return val.join(',')
+      } },
+      {
+        field: "user-used", header: "{{__('fields.on-used')}}", flex: 1, formater: function (val) {
+          return val ? "{{__('fields.enable')}}" : "{{__('fields.disable')}}";
+        }
+      },
+      {
+        field: "row-handle", header: "{{__('fields.handle')}}", handle: [
+         
+          {
+            text: "{{__('fields.edit')}}", class: 'ui button mini yellow', icon: 'icon edit', action: function (row) {
+              top.layout.Page('{{user.manage}}/rbac/users-edit?did=' + row._id + '&type=edit', "{{__('fields.edit-user')}}");
+            }
+          }
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs, 10);
+    $table.LoadData('{{user.manage}}/rbac/users');
+    $table.AddButton(
+      [
+        {
+          text: "{{__('fields.user-append')}}", handle: function () {
+            top.layout.Page('{{user.manage}}/rbac/users-edit', "{{__('fields.user-append')}}");
+          }
+        }
+      ]
+    );
+  })
+</script>
+{%endblock%}

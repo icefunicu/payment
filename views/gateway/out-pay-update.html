@@ -1,0 +1,49 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+<style>form.form,div.field,pre,div.fluid{height: 100%;}div.workspace,div.body{height:90% ;}</style>
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false" method="post">
+    <div class="field">
+        <div class="ui fluid input">
+            <pre id="editor" style=" height:100%; width: 100%;font-size: 14px;">{{code}}</pre>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    {% include '../shared/components/slot_submit.html' %}
+  
+    <script src="/code/ace.js"></script>
+    <script src="/code/ext-language_tools.js"></script>
+    <script> 
+        var editor = ace.edit("editor",{
+            mode: "ace/mode/javascript",
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            theme:'ace/theme/sqlserver'
+        });
+  
+        
+        sals.use(['ajaxForm'],function(){
+            $('form.post-form').ajaxForm({
+                beforeSubmit:function(formData){
+                    formData[formData.length] = {name: 'gateway-code', value: editor.getValue(), type: 'text', required: true}
+                },
+                complete:function(){
+                    $('.profile-save').removeClass('loading');
+                    $('form.post-form').removeClass('loading');
+                },
+                error: function (data) {
+                    top.layout.notify(data.statusText, { title: data.status, class: 'error' });
+                },
+                success: function (res) { 
+                    if (res.success) {
+                        top.layout.tip(res.message);
+                    } else {
+                        top.layout.notify(res.message, { class: 'error' });
+                    }
+                }
+        });
+        });
+    </script>
+</form>
+
+{%endblock%}

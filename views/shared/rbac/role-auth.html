@@ -1,0 +1,41 @@
+{% extends '../layout.html' %}
+{# 判断有没有对应权限 #}
+{% macro hasCode(code) %} 
+ {% for r in role.auths %}
+    {%if r == code %}checked="checked"{%endif%}
+ {%endfor%}
+{% endmacro %}
+
+{% block content %}
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th>{{__('fields.group')}}</th>
+            <th>{{__('fields.operation')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for auth in auths%}
+        <tr>
+            <td>{{auth.group}}</td>
+            <td>{%-for lst in auth.lists %}
+                <div class="ui checkbox">
+                    <input type="checkbox" name="auth-list" {{hasCode(auth.type+'-'+lst.code)}}  value="{{auth.type}}-{{lst.code}}">
+                    <label>{{lst.text}}</label>
+                </div>{%endfor-%}
+            </td>
+        </tr>
+        {%endfor%}
+
+    </tbody>
+</table>
+{% include '../../shared/components/slot_submit.html' %}
+</form>
+ 
+
+<script type="text/javascript">
+    sals.use(['ajaxForm']);
+</script>
+
+{%endblock%}

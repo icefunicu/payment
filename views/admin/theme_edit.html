@@ -1,0 +1,140 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+<script src="/code/ace.js"></script>
+
+{%if NODE_ENV == constant.StartModel.DEBUG %}
+阿斯顿
+{%endif%}
+<div class="ui grid">
+    <div class="four wide column">
+        <div class="ui card fluid">
+            <div class="content content-box">
+                <span class="ui big red text">{{__("fields.doc-cur-name")}}:</span>
+                <div class="ui huge middle aligned divided list">
+
+                    {%for file in files%}
+                    <div class="item">
+                        <div class="right floated content">
+                            <i class="icon remove red" style="cursor:pointer ;" data-path="{{file}}"></i>
+                          </div>
+                        <div class="content">
+                            <a class="header file-name">{{file}}</a>
+                        </div>
+                    </div>
+                    {%endfor%}
+                    <div class="item">
+                        <div class="content">
+                            <a class="header file-append"><i class="icon plus mini"></i> {{__("fields.new-doc-name")}}</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="twelve wide column">
+        <div class="ui fluid input" style="height:100% ;padding: 0; overflow: hidden;">
+            <pre id="editor" style=" height:100%; width: 100%;font-size: 14px;">{{__("fields.editor-empty-help")}}</pre>
+        </div>
+    </div>
+
+
+</div>
+<p>&nbsp;</p>
+<div class="ui animated fade button blue medium form-post" tabindex="-1">
+    <div class="visible content"><i class="upload icon"></i>{{__('modal.save')}}</div>
+    <div class="hidden content"><i class="save icon"></i>{{__('modal.saveed')}}</div>
+</div>
+
+
+<script type="text/javascript">
+    sals.use([], function () {
+        function rSize() {
+            $('.content-box').height($(window).height() - 180);
+        }
+        $(window).resize(function () {
+            rSize();
+        });
+
+        var editor = ace.edit("editor", {
+            mode: "ace/mode/javascript",
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            theme: 'ace/theme/sqlserver'
+        });
+        $('.content-box').css({'overflow':'auto'})
+        $(document).ready(rSize);
+        $('a.file-append').on('click',function(){
+            top.layout.prompt('{{__("fields.input-doc-name")}}',function(res){
+                sals.post('', { type: 'add', path: res }, function (res) {
+                    if (res.success) {
+                        top.layout.tip(res.message);
+                        window.location.reload();
+                    } else {
+                        top.layout.notify(res.message, { class: 'error' });
+                    }
+                })
+            },'{{__("fields.new-doc-name")}}.html')
+        })
+        $('.item i.remove').on('click',function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var path =$(this).data('path');
+            top.layout.confirm('{{__("fields.remove-confirm")}}:'+path,function(res){
+                if(res){
+                    sals.post('', { type: 'remove', path:path }, function (res) {
+                        if (res.success) {
+                        top.layout.tip(res.message);
+                        window.location.reload();
+                    } else {
+                    top.layout.notify(res.message, { class: 'error' });
+                }
+                    });
+                }
+            })
+            
+        })
+        $('a.file-name').on('click', function () {
+            window.path = undefined;
+            var $this = $(this);
+            sals.post('', { type: 'read', path: $this.text() }, function (res) {
+                if (res.success) {
+                    window.path = $this.text();
+                    if ($this.text().endsWith('.js')) {
+                        editor.session.setMode("ace/mode/javascript");
+                    } else if ($this.text().endsWith('.html')) {
+                        editor.session.setMode("ace/mode/html");
+                    }
+                    else if ($this.text().endsWith('.cfg')) {
+                        editor.session.setMode("ace/mode/json");
+                    }else{
+                        editor.session.setMode("ace/mode/text");
+                    }
+
+                    editor.setValue(res.content);
+                } else {
+                    top.layout.notify(res.message, { class: 'error' });
+                }
+            })
+        });
+        $('.form-post').on('click',function(){
+            if(!window.path){
+                top.layout.tip('{{__("fields.no-doc-save")}}')
+                return;
+            }
+            if(window.path){
+                sals.post('', { type: 'write', path: window.path,content:editor.getValue() }, function (res) {
+                    if (res.success) {
+                        top.layout.tip(res.message);
+                    } else {
+                    top.layout.notify(res.message, { class: 'error' });
+                }
+                });
+            }
+            
+        })
+    });
+
+</script>
+{%endblock%}

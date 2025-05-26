@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script>if(this!=top){top.location.replace(this.location)}</script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <title>{{config['site-title']}}</title>
+    <link href="/custom/css/lanai-ui.min.css" rel="stylesheet" /> 
+    <script src="/custom/js/jquery.min.js"></script> 
+    <script src="/public/js/socket.io.min.js"></script>
+    
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper"> 
+        <header class="main-header"> 
+            <a href="/" class="logo"> 
+                <span class="logo-mini"><img src="{{config['site-logo']}}" style="height:44px; width:180px" /> </span>
+                <span class="logo-lg"><img src="{{config['site-logo']}}" style="height:44px; width:180px" /> </span>
+            </a> 
+            <nav class="navbar navbar-static-top" role="navigation"> 
+                <a href="javascript:void(0);" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only"></span>
+                </a> 
+                <div class="collapse navbar-collapse pull-left" role="customer-navigation">
+                    <ul class="nav navbar-nav nav-addtabs disable-top-badge hidden-xs" role="menulist"></ul>
+                </div>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">  
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <!-- The user image in the navbar-->
+                                <img src="{{customer.avatar}}" class="user-image mbr-avatar-image" alt="User Image" />
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs">{{customer['mbr-name']}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="{{customer.avatar}}" class="img-circle mbr-avatar-image" alt="User Image">
+                                    <p>{{customer['mbr-name']}}
+                                        <small>{{customer['mbr-account']}}</small>
+                                    </p>
+                                </li>
+                                <!-- ./ Menu Body -->
+                             
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <div class="btn-group">
+                                            <a href="javascript:void(0);" class="btn btn-default btn-flat" data-addtab="UserProfile"
+                                                data-target="#MasterTabs" data-title="个人资料"
+                                                data-url="{{customer.manage}}/profile#tab_1"><i class="fa fa-user"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="btn btn-default btn-flat" data-addtab="UserProfile"
+                                                data-target="#MasterTabs" data-title="修改头像"
+                                                data-url="{{customer.manage}}/profile#tab_2">
+                                                <i class="fa fa-photo"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" data-url="{{customer.manage}}/profile#tab_3" class="btn btn-default btn-flat" data-addtab="UserProfile"
+                                            data-target="#MasterTabs" data-title="修改密码">
+                                                <i class="fa fa-key"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="{{customer.manage}}/login-out" class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu" data-widget="tree">                    
+                </ul>
+                <!-- /.sidebar-menu -->
+
+                <div class="sidebar-footer hidden-small fadeInLeft animated">
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="刷新" data-widget="tooltip-refresh">
+                        <span class="fa fa-refresh" aria-hidden="true"></span>
+                    </a>
+                    <a id="fullscreen" data-toggle="tooltip" data-placement="top" title="" data-original-title="全屏" data-widget="tooltip-fullscreen">
+                        <span class="fa fa-arrows-alt" aria-hidden="true"></span>
+                    </a>
+                    <a id="lockpage" data-toggle="tooltip" data-placement="top" title="" data-original-title="锁定"
+                        data-widget="tooltip-lock">
+                        <span class="fa fa-eye-slash" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" href="{{customer.manage}}/login-out" data-original-title="退出">
+                        <span class="fa fa-power-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content container-fluid" style="padding:0px">
+                <ul class="nav nav-tabs menu-tabs" id="MasterTabs" role="tablist">
+                    <li class="nav-tabs-header active" role="presentation">
+                        <a aria-controls="home" data-toggle="tab" href="#home" name="home" role="tab"><i class="fa fa-home"></i> 系统主页</a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content fixheight">
+                    <div class="tab-pane active" id="home" role="tabpanel">
+                        <div class="box box-widget no-shadow">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <fieldset class="lanai-fieldset">
+                                            <legend><i class="fa fa-user"></i> 基本信息</legend>
+                                            <div style="padding:20px">
+                                                <div style="float: left ;font-size:24px">
+                                                    <p >账号:<span>{{customer['mbr-account']}}</span></p>
+                                                    <p >昵称:<span>{{customer['mbr-name']}}</span></p>
+                                                    <p >账户类型:<span>{{customer['mbr-acc-type']}}</span><span>&nbsp;&nbsp;&nbsp;&nbsp;接入权限:{{customer['mbr-access-used']}}</span></p>
+                                                </div>
+                                                <img  src="/custom/images/man-with-laptop-light.png" style="width:180px ;float: right;"/>
+                                            </div>
+                                        </fieldset>
+
+                            
+                                        <fieldset class="lanai-fieldset margin-t-15 no-shadow">
+                                            <legend><i class="fa fa-line-chart"></i> 统计信息</legend>
+
+                                            <div class="row" style="padding: 10px !important; margin: 0px !important;">
+                                                <div class="col-sm-4">
+                                                <div class="small-box bg-aqua">
+                                                    <div class="inner">
+                                                        <h3>今日收入(元)</h3>
+                                                        <h2>{{today|money}}</h2>
+                                                    </div>
+                                                    <div class="icon"><i class="fa fa-shopping-cart"></i></div>
+                                                </div></div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="small-box bg-yellow ">
+                                                        <div class="inner">
+                                                            <h3>累计收入(元)</h3>
+                                                            <h2>{{total |money}}</h2>
+                                                        </div>
+                                                        <div class="icon"><i class="fa fa-cc-visa"></i></div>
+                                                    </div></div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="small-box bg-green ">
+                                                            <div class="inner">
+                                                                <h3>当前余额(元)</h3>
+                                                                <h2>{{customer['cashs']['total']|money}}</h2>
+                                                            </div>
+                                                            <div class="icon"><i class="fa fa-dollar"></i></div>
+                                                        </div></div>
+                                            </div> 
+                                        </fieldset>
+
+                                        <fieldset class="lanai-fieldset margin-t-15 no-shadow">
+                                            <legend><i class="fa fa-shield"></i> 我的权限</legend>
+
+                                            <div class="row" style="padding: 10px !important; margin: 0px !important;">
+                                                
+                                                <div class="col-sm-4">
+                                                <div class="small-box bg-blue-active">
+                                                    <div class="inner"><h3>结算周期</h3><h2>{{customer['mbr-risk']['frequency']}}</h2></div>
+                                                    <div class="icon"><i class="fa fa-chain"></i></div>
+                                                </div></div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="small-box bg-green-active">
+                                                        <div class="inner"><h3>可用时间段:</h3><h2>{{customer['mbr-risk']['useTimeStart']}}-{{customer['mbr-risk']['useTimeEnd']}}</h2></div>
+                                                        <div class="icon"><i class="fa fa-clock-o"></i></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="small-box bg-aqua">
+                                                        <div class="inner"><h3>单日限额</h3><h2>{{customer['mbr-risk']['dayMax']|money}}</h2></div>
+                                                        <div class="icon"><i class="fa fa-cny"></i></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="small-box bg-light-blue">
+                                                        <div class="inner"><h3>单笔提现</h3><h2>{{customer['mbr-risk']['draw_max_one']|money}}</h2></div>
+                                                        <div class="icon"><i class="fa fa-money"></i></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="small-box bg-teal-active">
+                                                        <div class="inner"><h3>单日提现</h3><h2>{{customer['mbr-risk']['draw_max_day']|money}}</h2></div>
+                                                        <div class="icon"><i class="fa fa-credit-card"></i></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="small-box bg-yellow-active">
+                                                        <div class="inner"><h3>API代发</h3><h2>{{customer['mbr-api-pay-use']}}</h2></div>
+                                                        {%if customer['mbr-api-pay-use'] == '开通'%}
+                                                        <div class="icon"><i class="fa fa-unlock"></i></div>{%else%}
+                                                        <div class="icon"><i class="fa fa-lock"></i></div>
+                                                        {%endif%}
+                                                    </div>
+                                                </div>
+                                                
+                                            </div> 
+                                        </fieldset>
+                                        
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <fieldset class="lanai-fieldset">
+                                            <legend><i class="fa fa-bullhorn"></i> 公告</legend>
+                                            <div style="padding: 20px;"> 
+                                                {%if gonggao |length < 1 %}
+                                                    <p>暂无公告</p>
+                                                {%else%}
+                                                {%for g in gonggao%}
+                                                    <p><a onclick="readNews(this)" data-did="{{g._id}}" href="javascript:;">{{g.title}}</a></p>
+                                                {%endfor%}
+                                                {%endif%}
+                                            </div> 
+                                        </fieldset>
+                                        <div>&nbsp;</div>
+                                        <div class="home-page">
+                                           
+                                            <blockquote class="bg-gray-light blockquote-success">
+                                                渠道资费一览表 
+                                            </blockquote> 
+                                            <div class="row">
+                                             
+                                                {%for gateway in data%} 
+                                                {%set mg = {} %}
+                                                {%for x in customer['mbr-risk']['charges'] %} 
+                                                    {%if x.code == gateway['channel-code'] %}
+                                                        {%set mg = x %}
+                                                    {%endif%} 
+                                                {%endfor%}
+                                                
+                                                <div class="col-sm-6"> 
+                                                    <div class="info-box bg-green">
+                                                        <span class="info-box-icon">{{gateway['channel-name']|first(1)}}</span> 
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">{{gateway['channel-name']}} <span class="right text-right text-sm" style="float:right">代码:{{gateway['channel-code']}}</span></span>
+                                                            <span class="info-box-number">费率:{{mg['charge']}} %</span>
+                                                            <div class="progress"><div class="progress-bar" style="width: 110%"></div></div>
+                                                            <span class="progress-description" style="float:left">单笔:{{mg.chargeMini|money}} - {{mg.chargeMax|money}} </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {%endfor%} 
+                                            </div> 
+                                            <blockquote class="bg-gray-light">渠道资费可能不定期更新,请您及时关注. </blockquote>
+                                            <div class="nav-tabs-custom margin-t-15 no-shadow">
+                                                <ul class="nav nav-tabs line-tabs tabs-success">
+                                                    <li class="active"><a href="#tab_1" data-toggle="tab">对接文档</a></li>
+                                                    <li><a href="#tab_3" data-toggle="tab">集成示例</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane active" id="tab_1">
+                                                        <table class="table"> 
+                                                            <tbody>
+                                                                <tr> 
+                                                                    <td><a href="{{customer.manage}}/letter" target="_blank">下载开户信</a></td> 
+                                                                </tr>
+                                                                <tr> 
+                                                                    <td><a href="/documents/API统一收单接口(v2.4).doc" target="_blank">API统一收单接口</a></td> 
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- /.tab-pane -->
+                                                    <div class="tab-pane" id="tab_3">
+                                                        <table class="table"> 
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>1.</td>
+                                                                    <td><a href="/documents/php-sdk.zip">PHP语言接入 SDK .zip</a></td> 
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>2.</td>
+                                                                    <td>ASP.NET语言接入 SDK .zip</td> 
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>3.</td>
+                                                                    <td><a href="/documents/python-sdk.zip">Python语言接入 SDK .zip</a></td> 
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>4.</td>
+                                                                    <td>JAVA语言接入 SDK .zip</td> 
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>5.</td>
+                                                                    <td>Javascript语言(NODEJS) SDK .zip</td> 
+                                                                </tr> 
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- /.tab-pane -->
+                                                </div>
+                                                <!-- /.tab-content -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+                <b>Version</b> {{ver}}
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright © 2013-{{time.getFullYear()}} .</strong> All rights reserved.
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark"> 
+            <div class="tab-content"> 
+                <!-- Settings tab content -->
+                <div class="tab-pane active" id="control-sidebar-settings-tab">
+                    <h3 class="control-sidebar-heading">样式选择</h3>
+                    <ul class="list-unstyled clearfix" id="listthemes">
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-blue"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span
+                                        class="bg-light-blue"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">蓝色</p>
+                        </li>
+                        <!-- ./ 蓝色-->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-black"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span
+                                        style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span
+                                        style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
+                                </div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #222"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">黑色</p>
+                        </li>
+                        <!--/. 黑色-->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-purple"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-purple-active"></span><span class="bg-purple"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">紫色</p>
+                        </li>
+                        <!-- /. 紫色-->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-green"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-green-active"></span><span class="bg-green"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">绿色</p>
+                        </li>
+                        <!-- /. 绿色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-red"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-red-active"></span><span class="bg-red"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">红色</p>
+                        </li>
+                        <!-- /. 红色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-yellow"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-yellow-active"></span><span class="bg-yellow"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">黄色</p>
+                        </li>
+                        <!-- /. 黄色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-blue-light"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span
+                                        class="bg-light-blue"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">淡蓝色</p>
+                        </li>
+                        <!-- /. 淡蓝色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-black-light"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span
+                                        style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span
+                                        style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
+                                </div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">淡黑色</p>
+                        </li>
+                        <!-- /. 淡黑色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-purple-light"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-purple-active"></span><span class="bg-purple"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">淡紫色</p>
+                        </li>
+                        <!-- /. 淡紫色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-green-light"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-green-active"></span><span class="bg-green"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">淡绿色</p>
+                        </li>
+                        <!-- /. 淡绿色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-red-light"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-red-active"></span><span class="bg-red"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">淡红色</p>
+                        </li>
+                        <!-- /. 淡红色 -->
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0)" data-skin="skin-yellow-light"
+                                style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                class="clearfix full-opacity-hover">
+                                <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                        class="bg-yellow-active"></span><span class="bg-yellow"
+                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span
+                                        style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">淡黄色</p>
+                        </li>
+                        <!-- /. 淡黄色 -->
+                    </ul>
+                    <!-- /. 样式变更-->
+                    <h3 class="control-sidebar-heading">布局选项</h3>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            <input type="checkbox" data-layout="fixed" class="pull-right">
+                            固定布局
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            <input type="checkbox" data-layout="layout-boxed" class="pull-right">
+                            箱式布局
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            <input type="checkbox" data-layout="sidebar-collapse" class="pull-right">
+                            侧边栏切换
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            <input type="checkbox" data-controlsidebar="control-sidebar-open" class="pull-right">
+                            右边栏固定显示
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            <input type="checkbox" data-sidebarskin="toggle" class="pull-right">
+                            右边栏背景切换
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            <input type="checkbox" data-enableNav="toggle" class="pull-right">
+                            顶部菜单切换
+                        </label>
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+        </aside> 
+        <div class="control-sidebar-bg"></div> 
+    </div>
+
+    <!-- ./wrapper -->
+    <div id="modal" class="hold-transition lockscreen" style="display:none">
+        <div class="lockscreen-wrapper">
+            <div class="lockscreen-logo">
+                <a href="javascript:void(0);">{{sys['site-name']}}</a>
+            </div>
+            <div class="lockscreen-name">{{customer['mbr-name']}}</div>
+            <div class="lockscreen-item">
+                <div class="lockscreen-image">
+                    <img src="{{customer.avatar}}" class="mbr-avatar-image" />
+                </div>
+                <form class="lockscreen-credentials">
+                    <div class="input-group">
+                        <input id="tbx_lock_password" type="password" class="form-control" placeholder="password"
+                            value="">
+
+                        <div class="input-group-btn">
+                            <button id="close_unlock" style="display:none" data-widget="tooltip-unlock"></button>
+                            <button type="button" class="btn lock-pwd-unlock" ><i class="fa fa-arrow-right text-muted"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="help-block text-center">输入密码解除锁定</div>
+            <div class="lockscreen-footer text-center">
+                Copyright &copy; 2013-{{time.getFullYear()}}
+                All rights reserved
+            </div>
+        </div>
+    </div>
+    <!-- ./ 锁定屏幕 -->
+    <script src="/custom/js/lanai-ui.min.js"></script> 
+<script>
+    var sucpath='{{customer.manage}}';
+    $('[data-widget="tooltip-refresh"]').on('click',function(){window.location.reload()})
+$('.lock-pwd-unlock').on('click',function(e){
+    $.ajax({
+        data:{type:'unlock',pwd:$('#tbx_lock_password').val()},
+    type:'POST',success:function(res){
+        if(res.success){
+            $('#close_unlock').trigger('click')
+            $('#tbx_lock_password').val('')
+        }else{
+            fyAlert.msg(res.message,{icon:2});
+        }
+    }
+    })    
+})
+    $(function () {
+    var Menu = [
+        {
+            "addtab": "home",
+            "target": "",
+            "title": "快捷菜单",
+            "url": "",
+            "icon": "fa-reorder",
+            "nav": "ui",
+            "children": [
+                {
+                    "addtab": "orders",
+                    "target": "#MasterTabs",
+                    "title": "订单管理",
+                    "url": "{{customer.manage}}/orders",
+                    "icon": "fa-money",
+                    "nav": "ui"
+                },
+                {
+                    "addtab": "UserProfile",
+                    "target": "#MasterTabs",
+                    "title": "我的信息",
+                    "url": "{{customer.manage}}/profile",
+                    "icon": "fa-user",
+                    "nav": "user"
+                },
+                {
+                    "addtab": "pay-out",
+                    "target": "#MasterTabs",
+                    "title": "资金提现",
+                    "url": "{{customer.manage}}/pay-out",
+                    "icon": "fa-money",
+                    "nav": "pay"
+                }
+            ]
+        }, {
+            "addtab": "pay",
+            "target": "",
+            "title": "提现",
+            "url": "",
+            "icon": "fa-laptop",
+            "nav": "pay",
+            "children": [
+                {
+                    "addtab": "pay-out",
+                    "target": "#MasterTabs",
+                    "title": "资金提现",
+                    "url": "{{customer.manage}}/pay-out",
+                    "icon": "fa fa-money",
+                    "nav": "pay"
+                },
+                {
+                    "addtab": "pay-out-list",
+                    "target": "#MasterTabs",
+                    "title": "提现订单",
+                    "url": "{{customer.manage}}/pay-out-list",
+                    "icon": "fa-bars",
+                    "nav": "pay"
+                },
+                {
+                    "addtab": "pay-money-log",
+                    "target": "#MasterTabs",
+                    "title": "资金变更日志",
+                    "url": "{{customer.manage}}/pay-money-log",
+                    "icon": "fa-bars",
+                    "nav": "pay"
+                }
+            ]
+        }, {
+            "addtab": "user",
+            "target": "",
+            "title": "账户信息",
+            "url": "",
+            "icon": "fa-user",
+            "nav": "user",
+            "children": [{
+                "addtab": "UserProfile",
+                "target": "#MasterTabs",
+                "title": "我的信息",
+                "url": "{{customer.manage}}/profile",
+                "icon": "fa-user",
+                "nav": "user"
+            },
+            {
+                "addtab": "bankcard",
+                "target": "#MasterTabs",
+                "title": "提现账户",
+                "url": "{{customer.manage}}/bankcard",
+                "icon": "fa-credit-card",
+                "nav": "user"
+            },
+            {
+                "addtab": "logs",
+                "target": "#MasterTabs",
+                "title": "操作记录",
+                "url": "{{customer.manage}}/logs",
+                "icon": "fa-navicon",
+                "nav": "user"
+            }
+            ]
+        },
+        {
+            "addtab": "child",
+            "target": "",
+            "title": "子账户",
+            "url": "",
+            "icon": "fa-users",
+            "nav": "child",
+            "children": [
+                {
+                    "addtab": "child-append",
+                    "target": "#MasterTabs",
+                    "title": "开设子账户",
+                    "url": "{{customer.manage}}/child/append",
+                    "icon": "fa-user-plus",
+                    "nav": "child"
+                },
+                {
+                    "addtab": "child-manage",
+                    "target": "#MasterTabs",
+                    "title": "子账户管理",
+                    "url": "{{customer.manage}}/child/manage",
+                    "icon": "fa-users",
+                    "nav": "child"
+                }
+                ,
+                {
+                    "addtab": "child-order",
+                    "target": "#MasterTabs",
+                    "title": "子账号订单",
+                    "url": "{{customer.manage}}/child/order",
+                    "icon": "fa-align-right",
+                    "nav": "child"
+                }
+            ]
+        },
+        {
+            "addtab": "notices",
+            "target": "",
+            "title": "通知与公告",
+            "url": "",
+            "icon": "fa-users",
+            "nav": "ajaxs",
+            "children": [
+                {
+                    "addtab": "notices",
+                    "target": "#MasterTabs",
+                    "title": "公告",
+                    "url": "{{customer.manage}}/notices",
+                    "icon": "fa-bell-o",
+                    "nav": "ajaxs",
+                    "children": []
+                },
+                {
+                    "addtab": "im",
+                    "target": "#MasterTabs",
+                    "title": "联系客服",
+                    "url": "{{customer.manage}}/im",
+                    "icon": "fa fa-comments",
+                    "nav": "ajaxs",
+                    "children": []
+                }
+            ]
+        }
+    ];
+    $.LanaiMenu(Menu, { EnableNav: true});
+})
+/**
+ * 读取新闻内容
+ */
+ function readNews(self) {
+    $.ajax({
+        url: '{{customer.manage}}/notices',
+        type: 'POST',
+        data: { type: 'read', did: $(self).data('did'), _r: Math.random() },
+        success: function (res) {
+            fyAlert.alert({
+                title: res.title, //标题
+                icon: 0,
+                skin: 'fy-blue',
+                content: res.html+'<br><p>发布日期:'+res.add+'</p>',    //内容 
+                position: 'fixed',//定位方式
+                closeBtn: false,   //是否显示关闭按钮
+                type: 1,      //type=2 为iframe
+                drag: false,   //是否开启拖动 
+                shadow: [0.3, '#000'], //遮罩
+                shadowClose: true,  //是否点击遮罩关闭
+                animateType: 1, // 0为默认动画 1为底部弹出 2为顶部弹出 3为左部弹出 4为右部弹出
+                aniExtend: '',   //例 css动画名 opacity
+                area: ['50%', '60%'], //设置宽高
+                minmax: false,
+                direction: ['center', 'center'], //方向 key1:right left center  key2: top bottom center
+                btns: {
+                    '知道了': function (obj) {
+                        obj.destory();
+                    }
+                },
+            })
+            $('.box-body.fy-alert-content').css({ 'overflow': 'auto' })
+        }
+    })
+
+}
+</script>
+<script src="/custom/index.js"></script>
+</body>
+</html>

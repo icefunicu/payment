@@ -1,0 +1,120 @@
+{# 修改密码 #}
+<div class="ui modal setting-password tiny">
+    <i class="close icon"></i>
+    <div class="header">{{__('layout.control.change-password')}}</div>
+        <div class="content">
+            <div class="ui large form">
+                <div class="field fluid">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" value="" name="password-old" placeholder="{{__('input.old-password')}}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" value="" name="password-new1" placeholder="{{__('input.new-password1')}}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" value="" name="password-new2" placeholder="{{__('input.new-password2')}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui negative button icon tiny"><i class="icon times"></i>&nbsp;{{__('modal.button.cancel')}}
+            </div>
+            <div class="ui positive right icon button tiny"><i class="icon check"></i>&nbsp;{{__('modal.button.yes')}}
+            </div>
+        </div>
+    </div>
+{# 问题反馈 #}
+<div class="ui modal modal-feedback tiny">
+    <i class="close icon"></i>
+    <div class="header">{{__('layout.control.feedback')}}</div>
+        <div class="content">
+            <div class="ui   form">
+                <div class="field">
+                    <label>{{__('tip-message.feedback')}}:<span style="color: #e5e5e46b;">sals_fankui@yeah.net</span> </label>
+                    <textarea id="layout-modal-feedback-textarea" rows="5" style="resize:none" placeholder="{{__('tip-message.feedback-tip')}}" ></textarea>
+                  </div> 
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui negative button icon tiny"><i class="icon times"></i>&nbsp;{{__('modal.button.cancel')}}
+            </div>
+            <div class="ui positive right icon button tiny"><i class="icon check"></i>&nbsp;{{__('modal.button.yes')}}
+            </div>
+        </div>
+    </div>
+
+    {# 对话框 #}
+    <script type="text/template" id="modal-actions-confirm">
+        <div class="actions">
+            <div class="ui negative button icon tiny"><i class="icon times"></i>&nbsp;{{__('modal.button.cancel')}}</div>
+            <div class="ui positive right icon button tiny"><i class="icon check"></i>&nbsp;{{__('modal.button.yes')}}</div>
+        </div>
+    </script>
+    <script type="text/template" id="modal-actions-alert">
+        <div class="actions">
+            <div class="ui positive right icon button tiny"><i class="icon check"></i>&nbsp;{{__('modal.button.yes')}}</div>
+        </div>
+    </script>
+    {# 锁屏遮罩 #}
+<div class="ui basic modal modal-leave-long-time">
+    <div class="floating centered">
+      <i class="lock icon huge"></i>{{__('layout.alter.lock-message')}}
+    </div>
+        <div class="content">
+        <div class="ui aligned centered header ">
+        <div class="ui input focus">
+            <input type="password" autocomplete="off" autofocus name="leave-password" placeholder="{{__('layout.alter.lock-input')}}">
+        </div>
+        <div class=" ui tiny yellow text err-message">&nbsp;</div>
+        </div>
+    </div>
+    <div class="actions"> 
+      <div class="ui teal ok inverted button">
+        <i class="checkmark icon"></i>{{__('modal.button.yes')}}</div>
+    </div>
+  </div>
+  {# 文件管理 #}
+  
+  <script type="text/template" id="modal-template">
+    
+    <div class="ui menu mini">
+        <a class="item disabled ctrl-parent-button"><i class="icon level up alternate"></i> {{__('file-manage.contextmenu.parent')}}</a>
+        <a class="item ctrl-refresh"><i class="icon sync alternate "></i> {{__('file-manage.contextmenu.refresh')}}</a>
+        <span class="item">$<span class="ctrl-io-path"></span></span>
+        <div class="right menu">
+        
+        <div class="ui dropdown item top right pointing toggle-switch-button dropdown-ctrls"><i class="toggle off icon"></i>{{__('file-manage.more.name')}}<i class="sort up icon"></i>
+        <div class="menu">
+            <a class="item ctrl-more-toggle toggle-switch-button"><i class="toggle off icon"></i> {{__('file-manage.more.name')}}</a>
+            <div class="divider"></div>
+            <a class="item disabled ctrl-more-select-all ctrl-more-select"><i class="check circle icon"></i> {{__('file-manage.more.select-all')}}</a>
+            <a class="item disabled ctrl-more-select-invert ctrl-more-select"><i class="check circle outline icon"></i> {{__('file-manage.more.select-invert')}}</a>
+            <a class="item disabled ctrl-more-select-none ctrl-more-select"><i class="circle outline icon"></i> {{__('file-manage.more.select-none')}}</a>
+        </div>
+        </div>
+
+        <div class="ui dropdown item top right pointing dropdown-ctrls">{{__('file-manage.contextmenu.more')}}<i class="sort up icon"></i>
+            <div class="menu">
+                <a class="item ctrl-upload"><i class="cloud upload alternate icon"></i> {{__('file-manage.contextmenu.upload')}}</a>
+                <a class="item ctrl-image"><i class="folder open icon"></i> {{__('file-manage.contextmenu.image')}}</a>
+                <div class="divider"></div>
+                <a class="item ctrl-new-folder"><i class="folder plus icon"></i> {{__('file-manage.contextmenu.folder')}}</a>
+                <a class="item ctrl-refresh"><i class="sync alternate icon"></i> {{__('file-manage.contextmenu.refresh')}}</a>
+            </div>
+            </div>
+
+
+
+        <a class="item ctrl-success-action disabled"><i class="check icon"></i>{{__('file-manage.more.action')}}</a>
+        </div>
+    </div>
+  </script>
+   

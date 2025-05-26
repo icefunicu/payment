@@ -1,0 +1,221 @@
+{#子账号 渠道配置#}
+{% extends './biz_base_layout.html' %}
+{% block content %}
+
+<form role="form" id="post-form" data-tip-show="false" action="" autocomplete="off" spellcheck="false" method="post">
+    
+<div class="switch switch-info">
+    <span style="float: left;line-height: 40px; padding: 0 10px 0 0 ;">API 收款:</span>
+    <input type="checkbox" name="pay-in-used" {%if child['mbr-access-used'] == '开通'%}checked{%endif%} id="chek6">
+    <label for="chek6">
+        <span></span>
+    </label>
+</div>
+
+
+<div class="switch switch-info">
+    <span style="float: left;line-height: 40px; padding: 0 10px 0 0 ;">API 出款:</span>
+    <input type="checkbox" name="pay-out-used" {%if child['mbr-api-pay-use'] == '开通'%}checked{%endif%} id="chek9">
+    <label for="chek9">
+        <span></span>
+    </label>
+</div>
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label for="demo-default">单日累计入款:(入款)</label>
+            <input type="number" min="1" max="50000000" name="cf-dayMax" class="form-control" value="{{child['mbr-risk']['dayMax']}}" placeholder="请输入内容...">
+        </div>
+    </div>
+
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">有效期至:</span>
+                <input type="text" name="end-date" class="form-control demo-date" value="{{child['mbr-end-date']}}"  placeholder="">
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".demo-date").datetimepicker({
+            format: 'yyyy-mm-dd',//显示格式
+            todayHighlight: 1,//今天高亮
+				minView: "month",//设置只显示到月份
+				startView: 2,
+				forceParse: 0,
+				showMeridian: 1,
+            autoclose: 1//选择后自动关闭
+        });
+    </script>
+
+    <div class="col-sm-12">
+        <span style="float: left;line-height: 20px; padding: 0 10px 0 0 ;">结算周期:</span>
+        <div class="radio radio-inline">
+            <input type="radio" name="frequency" id="radio1" value="T0" checked>
+            <label for="radio1">D0</label>
+        </div>
+        <div class="radio radio-inline radio-primary">
+            <input type="radio" name="frequency" id="radio2" value="T1" disabled>
+            <label for="radio2">T1</label>
+        </div>
+        <div class="radio radio-inline radio-success">
+            <input type="radio" name="frequency" id="radio3" value="T2" disabled>
+            <label for="radio3">T2</label>
+        </div>
+        <div class="radio radio-inline radio-info">
+            <input type="radio" name="frequency" id="radio5" value="T7" disabled>
+            <label for="radio5">T7</label>
+        </div>
+        <div class="radio radio-inline radio-warning">
+            <input type="radio" name="frequency" id="radio6" value="T30" disabled>
+            <label for="radio6">T30</label>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">使用时间段:</span>
+                <input type="text" name="useTimeStart" class="form-control demo-datetime" value="{{child['mbr-risk']['useTimeStart']}}" readonly placeholder="">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">至:</span>
+                <input type="text" name="useTimeEnd" class="form-control demo-datetime" value="{{child['mbr-risk']['useTimeEnd']}}" readonly placeholder="">
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".demo-datetime").datetimepicker({
+				format: 'hh:ii',//显示格式
+				todayHighlight: 1,//今天高亮
+				startView: 1,
+                datepicker:1,
+				forceParse: 1,
+				showMeridian: 0,
+				autoclose: 1//选择后自动关闭
+			});
+    </script>
+
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label for="demo-default">单笔提现-最小:(出款)</label>
+            <input type="number" min="1" max="20000" name="draw-min-one" class="form-control" value="{{child['mbr-risk']['draw_min_one']}}" placeholder="请输入内容...">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label for="demo-default">单笔提现-最大:(出款)</label>
+            <input type="number" min="1" max="20000" name="draw-max-one" class="form-control" value="{{child['mbr-risk']['draw_max_one']}}" placeholder="请输入内容...">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label for="demo-default">单日提现-累计:(出款)</label>
+            <input type="number" min="1" max="500000" name="draw-max-day" class="form-control" value="{{child['mbr-risk']['draw_max_day']}}" placeholder="请输入内容...">
+        </div>
+    </div>
+
+    
+</div>
+{# 渠道s #}
+<div class="row">
+
+{% set myGateways = customer['mbr-risk']['charges'] %}
+{% set childGateways = child['mbr-risk']['charges'] %}
+        {%for gateway in gateways%}
+        <div class="col-sm-3">
+        <div class="box box-success box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{gateway['channel-name']}}</h3>
+            </div>
+            
+            <div class="box-body">
+                <p>代码:<code>{{gateway['channel-code']}}</code></p>
+                <p>您的费率:<code>{%for s in myGateways%}{%if s.code ==gateway['channel-code'] %}{{s.charge}}{%endif%}{%endfor%} %</code></p>
+                <p>单笔:<code>{%for s in myGateways%}{%if s.code ==gateway['channel-code'] %} {{s.chargeMini|money}}-{{s.chargeMax|money}} {%endif%}{%endfor%}</code></p>
+                <p>
+                        <div class="switch switch-info switch-sm">
+                            <span style="float: left;line-height: 30px; padding: 0 10px 0 0 ;">是否开通:</span>
+                        <input name="gay-used-{{gateway['channel-code']}}" type="checkbox" {%for s in childGateways%}{%if s.code == gateway['channel-code'] %}checked{%endif%}{%endfor%} id="chek{{gateway['channel-code']}}">
+                        <label for="chek{{gateway['channel-code']}}"><span></span></label>
+                    </div> 
+                </p>
+                <p>子账号费率:
+                    <div class="form-group"> 
+                        <input type="number" min="0.01" max="100" step="0.01" name="ch-rate-{{gateway['channel-code']}}" value="{%for s in childGateways%}{%if s.code ==gateway['channel-code'] %}{{s.charge}}{%endif%}{%endfor%}" class="form-control input-sm" placeholder="请输入内容...">
+                    </div>
+                </p>
+                <p>单笔最小:
+                    <div class="form-group"> 
+                        <input type="number" min="1" max="20000" name="ch-min-one-{{gateway['channel-code']}}" value="{%for s in childGateways%}{%if s.code ==gateway['channel-code'] %}{{s.chargeMini}}{%endif%}{%endfor%}" class="form-control input-sm" placeholder="请输入内容...">
+                    </div>
+                </p>
+                <p>单笔最大:
+                    <div class="form-group"> 
+                        <input type="number" max="20000" min="1" name="ch-max-one-{{gateway['channel-code']}}" value="{%for s in childGateways%}{%if s.code ==gateway['channel-code'] %}{{s.chargeMax}}{%endif%}{%endfor%}" class="form-control input-sm" placeholder="请输入内容...">
+                    </div>
+                </p>
+            </div>
+        </div>
+    </div>
+        {%endfor%}
+        
+    
+    
+</div>
+<div class="pull-right">
+    <button type="button" class="btn btn-primary btn-flat btn-sm fy-alert-btn btn-post3" >确认</button>
+    <button type="button" class="btn btn-primary btn-flat btn-sm fy-alert-btn-close" onclick="closeWin()">关闭</button>
+</div>
+<div style="clear: both; margin: 20px 0 0px 0;">&nbsp;</div>
+<div style="clear: both; margin: 0px 0 20px 0;">
+    <blockquote class="bg-gray-light">
+        <P>子账号费率不能小于您的费率,如果等于您的费率,则子账号的订单您无法获得任何分润</P>
+        <P>只有您已经开通的渠道,才可以分配给子账号,如果需要其他渠道,请联系管理员开通</P>
+        <P>结算周期只能选择 <code>D0</code> ,实时结算</P>
+        <P>您也可以直接联系管理员进行设置,避免设置出错,导致子账号不能使用</P>
+    </blockquote>
+</div>
+</form>
+<script>
+    function closeWin(){
+        top.$('.fy-alert-shadow').remove();
+        top.fyAlert.hide();
+        setTimeout(function(){
+            top.$('.box.fy-alert-box').remove();
+            top.$('.fy-alert-shadow').remove();
+        },600);
+    }
+    $('#post-form').ajaxForm({
+        type: "POST",
+        dataType: "json",
+        iframe: false,
+        timeout: 1000 * 60 * 5,
+        error: function (xhttp, type, message, $form) {
+            //提交失败后执行的回调函数
+            tip(message, 3,false);
+        },
+        success:function(xhttp){
+            if (xhttp.success) {
+                tip(xhttp.message,1,false);
+            } else {
+                tip(xhttp.message, 2,false);
+            }
+        }
+    })
+    $('.btn-post3').on('click',function(){
+        $('#post-form').trigger('submit')
+    })
+</script>
+{% endblock %}

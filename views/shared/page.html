@@ -1,0 +1,27 @@
+{# 前端分页 #}
+{%- macro page(url,total,pageIndex=1,maxPage=1,pageSize=19,buttonSize=5) -%} 
+{%if maxPage > 0%}
+<ul class="ui centered menu pagination">
+    <li><a href="{{url}}" target="_self" class="item"><i class="icon angle double left glyphicon glyphicon-fast-backward"></i></a></li>
+    <li><a href="{%if pageIndex <= 1 %}{{url}}{%else%}{{url}}/{{pageIndex-1}}{%endif%}" class="item"><i class="icon angle left glyphicon glyphicon-backward"></i></a></li>
+    {%-if pageIndex>3-%}
+    <li class="disabled item"><span>...</span></li>
+    {%-endif-%}
+    {%-for b in range(pageIndex-2,pageIndex)-%}
+      {%-if b > 0-%}
+      <li><a  href="{{url}}/{{b}}" target="_self" class="item {%if b==pageIndex%}active{%endif%}">{{b}}</a></li>
+      {%-endif-%}
+    {%-endfor-%}
+    {%-for b in range(pageIndex,pageIndex+3)-%}
+      {%if b <= maxPage%}
+      <li><a  href="{{url}}/{{b}}" target="_self" class="item {%if b==pageIndex%}active{%endif%}">{{b}}</a></li>
+      {%-endif-%}
+    {%-endfor-%}
+    {%-if pageIndex < maxPage-2-%}
+    <li class="disabled item"><span>...</span></li>
+    {%-endif-%}
+    <li><a href="{{url}}/{%if pageIndex == maxPage%}{{pageIndex}}{%else%}{{pageIndex+1}}{%endif%}" target="_self" class="item"><i class="icon angle right glyphicon glyphicon-forward"></i></a></li>
+    <li><a href="{{url}}/{{ maxPage }}" class="item"><i class="icon angle double right glyphicon glyphicon-fast-forward"></i></a></li>
+  </ul>
+{%endif%}
+{%- endmacro -%}

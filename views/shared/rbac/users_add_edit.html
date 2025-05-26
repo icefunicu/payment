@@ -1,0 +1,41 @@
+{% extends '../layout.html' %}
+
+{% import "../forms.html" as forms %}
+{{data}}
+{% block content %}
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+  {{ forms.hidden('data_id',data['_id']) }}
+
+  {{ forms.text('user-text',__('fields.nickname'),data['user-text'])}}
+
+  {{ forms.text('user-name',__('fields.account'),data['user-name'])}}
+
+  {{ forms.text('user-password',__('fields.password'),data['user-password'])}}
+
+  {{ forms.textarea('user-desc',__('fields.describe'),data['user-desc'])}}
+
+  <div class="three fields">
+    {{ forms.checkbox('user-edit-password',__('fields.edit-password'),'true',data['user-edit-password']  )}}
+    {{ forms.checkbox('user-alway-password',__('fields.alway-password'),'true',data['user-alway-password'] )}}
+    {{ forms.checkbox('user-used',__('fields.on-used'),'true',data['user-used'] )}}
+  </div>
+  <div class="field"><label>{{__('fields.part-of-role')}}:</label></div>
+  
+  <div class="three fields">
+    {%for role in roles%}
+    <div class="field">
+      <div class="ui toggle checkbox">
+        <input type="checkbox" name="user-role" {%for r in data.roles %} rr='{{r}}' {%if r == role._id %}checked="checked"{%endif%}{%endfor%} value="{{role['_id']}}" tabindex="0" class="hidden">
+        <label>{{role['role-name']}}</label>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+
+  {% include '../../shared/components/slot_submit.html' %}
+</form>
+
+<script type="text/javascript">
+  sals.use(['ajaxForm']);
+</script>
+{%endblock%}

@@ -1,0 +1,52 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+{% import "../shared/forms.html" as forms %}
+{%if query.type != 'edit' %}
+<h2 class="ui header">{{__('member.title.append')}}</h2>
+{%endif%}
+
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+    {%if query.type == 'edit' %}
+    {{ forms.hidden('data-id',data['_id']) }}
+    {{ forms.hidden('data_edit','edit') }}
+    {%endif%}
+
+    {{ forms.text('mbr-account',__('member.account') , data['mbr-account'],__('member.account') ,'user') }}
+
+    {%if query.type != 'edit' %}
+    {{ forms.text('mbr-password',__('member.password'),'',__('member.password'),'key') }}
+    {%endif%}
+
+    {{ forms.text('mbr-name',__('member.name'), data['mbr-name']) }}
+
+    {{ forms.select('mbr-acc-agent-type','代理类型',['普通账户','代理账户'],data['mbr-acc-agent-type']) }}
+
+    {{ forms.dropdown('mbr-pid-pid','上级代理',agUser,data['agency'].oid|string,'_id','mbr-name','可指定本账户的代理商') }}
+
+    {{ forms.select('mbr-is-use',__('member.on-used'),[__('member.enable'),__('member.disable')],data['mbr-is-use']) }}
+    
+    {{ forms.select('mbr-acc-type','账户类型',['基本户','专业账户','高级账户','钻石账户'],data['mbr-acc-type']) }}
+
+    {{ forms.select('mbr-access-used','API接入',['开通','未开通'],data['mbr-access-used']) }}
+
+    {{ forms.select('mbr-api-pay-use','API出款',['开通','未开通'],data['mbr-api-pay-use']) }}
+
+    {{ forms.text('mbr-web-site',__('member.info.website'), data['mbr-web-site']) }}
+
+    {{ forms.text('mbr-web-url',__('member.info.siteurl'),data['mbr-web-url'],'http://www.domain.com','globe') }}
+
+    {{ forms.text('mbr-phone','联系手机', data['mbr-phone'],'','phone') }}
+
+    {{ forms.text('mbr-qq','联系QQ', data['mbr-qq'],'','qq') }}
+
+    {{ forms.date('mbr-end-date',__('member.endtime'),data['mbr-end-date'],__('member.enddate') ) }}
+
+    {{ forms.textarea('mbr-describe',__('member.describe'),data['mbr-describe']) }}
+
+    {% include '../shared/components/slot_submit.html' %}
+    <script type="text/javascript">
+        sals.use(['ajaxForm','calendar']);
+    </script>
+</form>
+{%endblock%}

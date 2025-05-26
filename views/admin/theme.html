@@ -1,0 +1,74 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+ 
+
+<h2 class="ui header">{{__("fields.theme-config")}}</h2>
+
+<div class="ui link cards">
+    {%for theme in themes%}
+    <div class="card">
+        <div class="image">
+            <img src="/themes/{{theme.path}}/{{theme.thumbnail}}">
+        </div>
+        <div class="content">
+            <div class="header">{{theme.name}}</div>
+            <div class="meta">
+                <span>{{theme.description}}</span>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="ui three buttons mini">
+                <div class="ui basic green button btn-apply" data-name="{{theme.name}}" data-path="{{theme.path}}">{{__('fields.apply')}}</div>
+                <div class="ui basic yellow button btn-edit" data-name="{{theme.name}}" data-path="{{theme.path}}">{{__('fields.edit')}}</div>
+                <div class="ui basic red button btn-remove" data-name="{{theme.name}}" data-path="{{theme.path}}">{{__('fields.remove')}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+
+<div class="ui icon message yellow">  <i class="info icon"></i>  <div class="content">
+    <div class="header"></div>
+    {{__('fields.teme-page-help')|safe}}
+    
+  </div>
+</div>
+
+
+<script type="text/javascript">
+    sals.use([], function () {
+        function callback(res) {
+            if (res.success) {
+                top.layout.tip(res.message);
+                window.location.reload();
+            } else {
+                top.layout.notify(res.message, { class: 'error' });
+            }
+        }
+        
+        $('.btn-remove').on('click', function () {
+            var $this = $(this);
+            top.layout.confirm('{{__("fields.remove-confirm")}}:' + $this.data('name'), function (res) {
+                if (res) {
+                    sals.post('', { type: 'remove', theme: $this.data('path') }, callback)
+                }
+            })
+        })
+        $('.btn-apply').on('click', function () {
+            var $this = $(this);
+            top.layout.confirm('{{__("fields.apply-use")}}:' + $this.data('name'), function (res) {
+                if (res) {
+                    sals.post('', { type: 'apply', theme: $this.data('path') }, callback)
+                }
+            })
+        })
+        $('.btn-edit').on('click', function () {
+            var $this = $(this);
+            top.layout.TabPage.AddPage('{{__("fields.theme-editor")}}', '{{user.manage}}/theme/edit?type=edit&path=' + $this.data('path'), 'icon edit');
+        })
+    });
+
+</script>
+
+{%endblock%}

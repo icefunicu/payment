@@ -1,0 +1,45 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+
+<div class="ui top attached tabular menu">
+  <a class="active item" data-tab="one">{{__('pages.proc-notify')}}</a>
+  <a class="item" data-tab="two">{{__('pages.proc-manage')}}</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="one">
+  <button class="ui blue basic button mini send-notify">{{__('pages.proc-send-notify')}}</button>
+  <button class="ui blue basic button mini send-callback">{{__('pages.proc-send-callback')}}</button>
+  <button class="ui blue basic button mini build-notify">{{__('pages.proc-build-notify')}}</button>
+  <button class="ui blue basic button mini build-back">{{__('pages.proc-build-back')}}</button>
+  <button class="ui red basic button mini made-settlement">{{__('pages.proc-made-settlement')}}</button>
+  <div class="ui horizontal divider"><i class="icon circle outline"></i></div>
+  <div class="ui inverted segment" style="height:200px ;">
+
+  </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="two">
+  <button class="ui red basic button drop-order">{{__('pages.proc-drop-order')}}</button>
+</div>
+<script type="text/javascript">
+  sals.use([], function () {
+    function msg(res){
+      if (res.success) {
+          top.layout.tip(res.message); 
+        } else {
+          top.layout.notify(res.message, { class: 'error' });
+        }
+    }
+    $('.menu .item').tab();
+    //手动异步
+    $('button.send-notify').on('click', function () {
+      sals.post('', { type: 'send-notify', oid: "{{data}}" }, msg);
+    });
+    //强制结算
+    $('button.made-settlement').on('click', function () {
+      sals.post('', { type: 'made-settlement', oid: "{{data}}" }, msg);
+    }); 
+
+  });
+</script>
+
+{%endblock%}

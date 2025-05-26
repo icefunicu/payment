@@ -1,0 +1,152 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+{% block content %}
+<form class="ui form post-form mini" action="" autocomplete="off" spellcheck="false" method="post">
+{# 轮换形式 #}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.title')}}</div>
+    </div>
+    <div class="content">
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "nothing" %}checked="checked"{%endif%} value="nothing">
+            <label>{{__('gateway.rotate.type-a')}}</label>
+        </div>
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "loop" %}checked="checked"{%endif%} value="loop">
+            <label>{{__('gateway.rotate.type-b')}}</label>
+        </div>
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "random" %}checked="checked"{%endif%} value="random">
+            <label>{{__('gateway.rotate.type-c')}}</label>
+        </div>
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "timing" %}checked="checked"{%endif%} value="timing">
+            <label>{{__('gateway.rotate.type-d')}}</label>
+        </div>
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "maxcount" %}checked="checked"{%endif%} value="maxcount">
+            <label>{{__('gateway.rotate.type-e')}}</label>
+        </div>
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "fulfil" %}checked="checked"{%endif%} value="fulfil">
+            <label>{{__('gateway.rotate.type-f')}}</label>
+        </div>
+        <div class="ui slider checkbox ">
+            <input type="radio" name="trun-type" {%if data.trunType == "onemoney" %}checked="checked"{%endif%} value="onemoney">
+            <label>{{__('gateway.rotate.type-g')}}</label>
+        </div>
+    </div>
+</div>
+
+{#接口循环#}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.type-b')}}</div>
+    </div>
+    <div class="content">
+        
+        {%for g in data['channel-gateways'] %}
+        <div class="inline fields mini">
+            <label>{{__('gateway.rotate.priority')}}:</label>
+            <div class="field mini"><input name="loop-index-{{g.gateway}}-{{g.channel}}" value="{{g.loopIndex}}" type="text"></div>
+            <label>{{__('gateway.rotate.use-gateway')}}:<div class="ui label mini teal">{{g.text}}<div class="detail">[{{g.gName}}]</div></div></label>
+        </div>
+        {%endfor%}
+        <div>{{__('gateway.rotate.type-b-help')|safe}}</div>
+    </div>
+</div>
+
+{#随机循环#}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.type-c')}}</div>
+    </div>
+    <div class="content">
+        <div>{{__('gateway.rotate.type-c-help')|safe}}</div>
+    </div>
+</div>
+
+{#定时轮换#}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.type-d')}}</div>
+    </div>
+    <div class="content">
+        
+        {%for g in data['channel-gateways'] %}
+        <div class="inline fields mini">
+            <label>{{__('gateway.rotate.from')}}:</label>
+            <div class="field mini calendar time"><input name="time-start-{{g.gateway}}-{{g.channel}}" value="{{g.timing.timeStart}}" type="text" ></div>
+            <label>{{__('gateway.rotate.to')}}：</label>
+            <div class="field calendar time"><input name="time-end-{{g.gateway}}-{{g.channel}}" value="{{g.timing.timeEnd}}" type="text"></div>
+            <label>{{__('gateway.rotate.use-gateway')}}:<div class="ui label mini teal">{{g.text}}<div class="detail">[{{g.gName}}]</div></div></label>
+        </div>
+        {%endfor%}
+        <div>{{__('gateway.rotate.type-d-help')|safe}}</div>
+    </div>
+</div>
+
+{#满笔轮换#}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.type-e')}}</div>
+    </div>
+    <div class="content">
+        {%for g in data['channel-gateways'] %}
+        <div class="inline fields mini">
+            <label>{{__('gateway.rotate.priority')}}:</label>
+            <div class="field mini"><input name="full-count-mini-{{g.gateway}}-{{g.channel}}" value="{{g.fullCount.countMini}}" type="text"></div>
+            <label>{{__('gateway.rotate.use-gateway')}}：<div class="ui label mini teal">{{g.text}}<div class="detail">[{{g.gName}}]</div></div> {{__('gateway.rotate.gateway-use-count')}}</label>
+            <div class="field"><input name="full-count-max-{{g.gateway}}-{{g.channel}}" value="{{g.fullCount.countMax}}"  type="text"></div>
+            <label>{{__('gateway.rotate.gateway-use-next')}}</label>
+        </div>
+        {%endfor%}
+        {{__('gateway.rotate.type-e-help')|safe}} 
+    </div>
+</div>
+
+{#满额轮换#}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.type-f')}}</div>
+    </div>
+    <div class="content">
+
+        {%for g in data['channel-gateways'] %}
+        <div class="inline fields mini">
+            <label>{{__('gateway.rotate.priority')}}:</label>
+            <div class="field mini"><input name="full-money-mini-{{g.gateway}}-{{g.channel}}" value="{{g.fullMoney.moneyMini}}" type="text"></div>
+            <label>{{__('gateway.rotate.use-gateway')}}：<div class="ui label mini teal">{{g.text}}<div class="detail">[{{g.gName}}]</div></div>{{__('gateway.rotate.gateway-use-money')}}</label>
+            <div class="field"><input name="full-money-max-{{g.gateway}}-{{g.channel}}" value="{{g.fullMoney.moneyMax}}" type="text"></div>
+            <label>{{__('gateway.rotate.gateway-use-next')}}</label>
+        </div>
+        {%endfor%}
+        {{__('gateway.rotate.type-f-help')|safe}}
+    </div>
+</div>
+
+{#单笔额度#}
+<div class="ui card fluid">
+    <div class="content">
+        <div class="header">{{__('gateway.rotate.type-g')}}</div>
+    </div>
+    <div class="content">
+        {%for g in data['channel-gateways'] %}
+        <div class="inline fields mini">
+            <label>{{__('gateway.rotate.money-min-max')}}:</label>
+            <div class="field mini"><input name="one-money-mini-{{g.gateway}}-{{g.channel}}" value="{{g.oneMoney.oneMini}}" type="text"></div>
+            <label>{{__('gateway.rotate.to')}}:</label>
+            <div class="field"><input name="one-money-max-{{g.gateway}}-{{g.channel}}" value="{{g.oneMoney.oneMax}}" type="text"></div>
+            <label>{{__('gateway.rotate.use-gateway')}}:</label> <div class="ui label mini teal">{{g.text}}<div class="detail">[{{g.gName}}]</div></div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{% include '../shared/components/slot_submit.html' %}
+</form>
+
+<script type="text/javascript">
+    sals.use(['ajaxForm', 'calendar'] );
+</script>
+{%endblock%}

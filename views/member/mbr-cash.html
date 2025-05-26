@@ -1,0 +1,78 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+
+{% block content %}
+
+<div class="ui grid">
+<div class="eight column row">
+  <div class="column">{{ forms.src_text('mbr-account','商户账户') }}</div>
+  <div class="column">
+    <button class="ui teal button mini search-button" ><i class="search icon"></i>{{__('fields.search')}}</button>
+  </div>
+</div>
+</div>
+<div class="ui grid">
+  <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+</div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    $('.search-button').on('click',function(){
+        $table.Reload({acc:$('[name="mbr-account"]').val(),use:$('[name="on-used"]').val(),web:$('[name="mbr-web-site"]').val()});
+    })
+ 
+
+    var columnDefs = [
+    { field: "user", header: "商户"},
+      { field: "accc_type_text", header: "账户类型"},
+      { header: "收款人姓名",field:'name'},
+      { header: "预留手机",field:'phone'},
+      { header: "身份证号",field:'idcard'},
+      { header: "账号",field:'account'},
+      { header: "银行",field:'bankName'},
+      { header: "状态",field:'accc_state'},
+      { header: "添加时间",field:'add_time',formater:function(val){return sals.date(val)}},
+      {
+        field: "row-handle", header: "{{__('fields.handle')}}", handle: [
+          {
+            text: "审核", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) {
+                top.layout.confirm('确认审核?<br/>审核后的账户可用于提现',function(res){
+                    if(res){
+                        sals.post('',{type:'audit',did:row._id},function(res){
+                        if(res.success){
+                            top.layout.tip(res.message); 
+                            $table.Reload();
+                        }else{
+                            top.layout.notify(res.message, { class: 'error' });
+                        }
+                    })
+                    }
+                })
+            }
+          },
+          {
+            text: "驳回", class: 'ui button mini yellow', icon: 'icon edit', action: function (row) {
+                top.layout.confirm('确认驳回?<br/>驳回后数据保留,但不能用于提款',function(res){
+                    if(res){
+                        sals.post('',{type:'drop',did:row._id},function(res){
+                        if(res.success){
+                            top.layout.tip(res.message); 
+                            $table.Reload();
+                        }else{
+                            top.layout.notify(res.message, { class: 'error' });
+                        }
+                    })
+                    }
+                })
+            }
+          }
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs,function(res){
+        $table.AddHtml('<div class="disabled item">总数:'+res.total+' 条数据</div>')
+    });
+    $table.LoadData(window.location.href);
+  })
+</script>
+{%endblock%}

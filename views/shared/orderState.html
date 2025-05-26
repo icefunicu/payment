@@ -1,0 +1,13 @@
+{# 订单状态 #}
+
+{% macro state(order) %}
+{%- if order.state == 0 -%}
+未支付{%- elif order.state == 1 -%}
+未支付{%- elif order.state == 16 -%}
+未支付{%- elif order.state == 2 -%}
+支付成功-通知中{%- elif order.state == 8 -%}
+支付成功-通知失败{%- elif order.state == 4 -%}
+支付成功-通知成功{%- elif order.state == 32 -%}
+超时-未支付{%- else -%}未知{% endif %}
+
+{% endmacro %}

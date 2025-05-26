@@ -1,0 +1,156 @@
+[
+    {
+        "text": "基础参数设置",
+        "icon": "tools",
+        "page": "{path}/configs"
+    },
+    {
+        "text": "消息中心",
+        "hidden":true,
+        "icon": "envelope outline",
+        "page": "{path}/mail-center",
+        "tip": "<small class='pull-right ui red label mail-center-tip' style='display:none'></small>"
+    },
+    {
+        "text": "模板管理",
+        "icon": "window restore outline",
+        "page": "{path}/theme"
+    },
+    {
+        "text": "插件",
+        "icon": "folder open outline",
+        "page": "{path}/plugins"
+    },
+    {
+        "hidden":true,
+        "text": "权限控制",
+        "icon": "cc stripe",
+        "children": [
+            {
+                "text": "角色管理",
+                "icon": "user shield",
+                "page": "{path}/rbac/role"
+            },
+            {
+                "text": "管理员",
+                "icon": "users",
+                "page": "{path}/rbac/users"
+            }
+        ]
+    },
+    {
+        "text": "支付中心",
+        "header": true,
+        "icon": "amazon pay",
+        "tip": "<small class='pull-right ui pink label'>重要</small>",
+        "page": ""
+    },
+    {
+        "text": "支付接口",
+        "icon": "cc stripe",
+        "children": [
+            {
+                "text": "安装新接口",
+                "icon": "cloud upload alternate",
+                "page": "{path}/gateway/gateway-append"
+            },
+            {
+                "text": "接口管理",
+                "icon": "usb",
+                "page": "{path}/gateway/gateways",
+                "tip": "<small class='pull-right ui pink label'>重要</small>"
+            }
+        ]
+    },
+    {
+        "text": "代付接口",
+        "icon": "dollar sign",
+        "children": [
+            {
+                "text": "安装新接口",
+                "icon": "linkify",
+                "page": "{path}/gateway/out-pay-add"
+            },
+            {
+                "text": "接口管理",
+                "icon": "list ul",
+                "page": "{path}/gateway/out-pay-manage"
+            }
+        ]
+    },
+    {
+        "text": "支付方式",
+        "icon": "star half alternate",
+        "page": "{path}/gateway/pay-type",
+        "tip": ""
+    },
+    {
+        "text": "订单列表",
+        "icon": "align left",
+        "page": "{path}/orders/order-in",
+        "tip": "<small class='pull-right ui pink label'>入款</small>"
+    },
+    {
+        "text": "提现列表",
+        "icon": "euro sign",
+        "page": "{path}/orders/order-out",
+        "tip": "<small class='pull-right ui teal label'>出款</small>"
+    },
+    {
+        "text": "实时监控",
+        "icon": "eye",
+        "page": "{path}/orders/order-runing",
+        "tip": ""
+    },
+    {
+        "text": "商户",
+        "header": true,
+        "icon": "users",
+        "tip": "<small class='pull-right ui blue label'>重要</small>"
+    },
+    {
+        "text": "商户管理",
+        "icon": "user friends",
+        "page": "{path}/members/manages"
+    },
+    {
+        "text": "商户开户",
+        "icon": "user plus",
+        "page": "{path}/members/append"
+    },
+    {
+        "text": "提现账户",
+        "icon": "cc amazon pay",
+        "page": "{path}/members/cash-account"
+    },
+    {
+        "text": "内容",
+        "header": true,
+        "icon": "hdd outline"
+    },
+    {
+        "text": "内容管理",
+        "icon": "hdd",
+        "page": "{path}/news/manages"
+    },
+    {
+        "text": "发布文章",
+        "icon": "pencil ruler",
+        "page": "{path}/news/append"
+    },
+    {
+        "text": "额外",
+        "header": true,
+        "icon": "wheelchair"
+    },
+    {
+        "text": "跑量广告",
+        "icon": "closed captioning outline",
+        "page": "{path}/members/otg-pays"
+    },
+    {
+        "text": "出款广告",
+        "icon": "truck",
+        "page": "{path}/members/otg-tps"
+    }
+]

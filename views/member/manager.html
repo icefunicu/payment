@@ -1,0 +1,95 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+
+{% block content %}
+
+<h2 class="ui header">商户管理</h2>
+<div class="ui grid">
+<div class="eight column row">
+  <div class="column">{{ forms.src_text('src-keyd','关键字搜索') }}</div>
+ 
+  <div class="column">
+    <button class="ui teal button mini search-button" ><i class="search icon"></i>{{__('fields.search')}}</button>
+  </div>
+</div>
+</div>
+<div class="ui grid">
+  <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+</div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    $('.search-button').on('click',function(){
+        $table.Reload({keyd:$('[name="src-keyd"]').val()});
+    })
+ 
+
+    var columnDefs = [
+      
+      { field: "mbr-account", header: "{{__('member.name')}}",formater:function(val,row){
+        return row['mbr-name']+'<br/>'+row['mbr-account']
+      } },
+      { field: "cashs", header: "当前余额",formater:function(val,row){
+        return  sals.money(val?val['total'] :0)
+      } },
+      { field: "mbr-pid", header: "商户PID"},
+      { field: "agency", header: "上级代理",formater:function(val,row){return val&&val.text}},
+      
+      { header: "{{__('member.info.website')}}",formater:function(val,row){
+          return row['mbr-web-site']+'<br/><a target="_blank" href="'+row['mbr-web-url']+'">'+row['mbr-web-url']+'</a>'
+      } },
+      { header: "{{__('member.info.joindate')}}",formater:function(val,row){
+          return sals.date(row['add_time'],'yyyy-MM-dd hh:mm');
+      } },
+      {
+        field: "mbr-is-use", header: "{{__('fields.on-used')}}",  formater: function (val) {
+          return val;
+        }
+      },
+      {
+        field:"mbr-end-date",header:"{{__('member.endtime')}}",formater:function(val){
+          return (val?val:'长期');
+        }
+      },
+      {
+        field: "row-handle", header: "{{__('fields.handle')}}", width: '500px',handle: [
+          {
+            text: "{{__('member.risk')}}", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) {
+              top.layout.Page('{{user.manage}}/members/risk-auth?did=' + row._id, '{{__("member.risk")}}:'+row['mbr-name'] );
+            }
+          },
+          {
+            text: "{{__('member.edit')}}", class: 'ui button mini yellow', icon: 'icon edit', action: function (row) {
+            
+              top.layout.Page('{{user.manage}}/members/append?did=' + row._id + '&type=edit', "编辑:"+row['mbr-name']);
+            }
+          }
+          ,
+          {
+            text: "开户资料", class: 'ui button mini green', icon: 'icon download', action: function (row) {
+              window.open('{{user.manage}}/members/acc-notic?did='+row._id);
+            }
+          }
+          ,
+          {
+            text: "{{__('member.ret-password')}}", class: 'ui button mini red', icon: 'icon edit', action: function (row) {
+              top.layout.Page('{{user.manage}}/members/ret-password?did=' + row._id , "重置密码:"+row['mbr-name'],{},true,'tiny',height='240px');
+            }
+          }
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs);
+    $table.LoadData('{{user.manage}}/members/manages');
+    $table.AddButton(
+      [
+        {
+          text: "{{__('member.title.append')}}", handle: function () {
+            top.layout.TabPage.AddPage("{{__('member.title.append')}}",'{{user.manage}}/members/append','icon user plus');
+          }
+        }
+      ]
+    );
+  })
+</script>
+{%endblock%}

@@ -1,0 +1,162 @@
+{% extends './biz_base_layout.html' %}
+{% block head %}
+<link  href="/public/cropper/cropper.css" rel="stylesheet">
+<script src="/public/cropper/cropper.js"></script>
+{% endblock%}
+{% block content %}
+<h2>个人信息</h2>
+
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs line-tabs tabs-danger">
+        <li class="active"><a href="#tab_1" data-toggle="tab">基本信息</a></li>
+        <li class=""><a href="#tab_2" data-toggle="tab">设置头像</a></li>
+        <li class=""><a href="#tab_3" data-toggle="tab">登录密码</a></li>
+        <li class=""><a href="#tab_4" data-toggle="tab">提现密码</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="row">
+                <form class="post-form" action="" autocomplete="off" spellcheck="false">
+                    <input value="profile" name="action" type="hidden">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">昵称:</label>
+                        <input type="text" class="form-control" name="mbr-name" value="{{customer['mbr-name']}}" placeholder="请输入内容...">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">站点名称:</label>
+                        <input type="text" class="form-control" name="mbr-web-site" value="{{customer['mbr-web-site']}}" placeholder="请输入内容...">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">网址:</label>
+                        <input type="text" class="form-control" name="mbr-web-url" value="{{customer['mbr-web-url']}}" placeholder="请输入内容...">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">联系电话:</label>
+                        <input type="text" class="form-control" name="mbr-phone" value="{{customer['mbr-phone']}}" placeholder="请输入内容...">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">联系QQ:</label>
+                        <input type="text" class="form-control" name="mbr-qq" value="{{customer['mbr-qq']}}" placeholder="请输入内容...">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary btn-post"><i class="fa fa-save"></i> 保存设置</button>
+                </div>
+            </form>
+            </div>
+
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+          
+                <div class="box-body">
+                    <div class="row"> 
+                    <div class="col-sm-12">
+                        <img src="{{customer.avatar}}" class="jqstooltip profile-user-img img-responsive img-circle user-avatar">
+                        <p style="clear:both;">&nbsp;</p>
+                        <div class="col-sm-12 text-center">
+                            <form class="post-form" action="" autocomplete="off" spellcheck="false">
+                                <input value="avatar" name="action" type="hidden">
+                                <input value="" name="avatar" type="hidden">
+                                <button type="button" class="btn btn-primary btn-post"><i class="fa fa-save"></i> 确认修改</button>
+                            </form>
+                        </div>
+                        <p style="clear:both;">&nbsp;</p>
+                    </div>
+                </div>
+                    <div class="row"> 
+                    {%for i in '123456789'%}
+                        <div class="col-sm-1">
+                            <img src="/avatar/avatar{{i}}.png" class="profile-user-img img-responsive img-circle img-bordered-sm profile-avatar">
+                        </div>
+                    {%endfor%}
+                </div>
+                <p style="clear:both;">&nbsp;</p>
+                </div> 
+            <script>
+                $('.profile-avatar').hover(function(){
+                    $(this).addClass('progress-bar-green')
+                },function(){
+                    $(this).removeClass('progress-bar-green')
+                }).on('click',function(){
+                    top.$('.mbr-avatar-image').attr({src:$(this).attr('src')})
+                    $('[name="avatar"]').val($(this).attr('src'));
+                    $('.user-avatar').attr({src:$(this).attr('src')})
+                })
+            </script>
+            
+        </div>
+
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_3">
+            <div class="row">
+                <form class="post-form" action="" autocomplete="off" spellcheck="false">
+                    <input value="password" name="action" type="hidden">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">原密码:</label>
+                        <input type="password" class="form-control" name="pwd-old" value="" placeholder="请输入内容...">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">新密码:</label>
+                        <input type="password" class="form-control" name="pwd1" value="" placeholder="请输入内容...">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">确认新密码:</label>
+                        <input type="password" class="form-control" name="pwd2" value="" placeholder="请输入内容...">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary btn-post"><i class="fa fa-save"></i> 修改密码</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_4">
+            <div class="row">
+                <form class="post-form" action="" autocomplete="off" spellcheck="false">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="demo-default">请输入当前提现密码:</label>
+                        <input class="form-control pay-pwd-password" type="password" value="" placeholder="提现密码...">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary btn-pay-post"><i class="fa fa-save"></i> 重置提现密码</button>
+                </div>
+                <script>
+                    $('.btn-pay-post').on('click',function(){
+                        ajax('',{action:'pay-pwd','password':$('.pay-pwd-password').val()}, function(res){
+                            if(res.success){
+                                alert(res.message)
+                            }else{
+                                tip(res.message,2)
+                            }
+                        })
+                    })
+                </script>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

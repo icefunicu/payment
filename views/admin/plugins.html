@@ -1,0 +1,69 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+
+<h2 class="ui header">插件管理器</h2>
+
+<div class="ui grid">
+    <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+</div>
+
+<script type="text/javascript">
+    sals.use(['ajaxForm', 'table', 'uploader'], function () {
+        var columnDefs = [
+
+            { header: "插件名", field: "Name" },
+            { header: "版本", field: 'Version', },
+            { header: "描述", field: 'Describe' },
+            { header: "安装时间", field: 'addTime',formater:function(val,row){
+                return sals.date(val)
+            }  },
+            { header: "状态", field: 'State' },
+            {
+                field: "row-handle", header: "管理", handle: [
+                    {
+                        text: "运行", class: 'ui button mini green', icon: 'icon play', action: function (row) {
+                            top.layout.Page('{{user.manage}}/plugins/run?did=' + row._id, '运行:' + row['Name'],{},true,'massive');
+                        }
+                    },
+                    {
+                        text: "参数设置", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) {
+                            top.layout.Page('{{user.manage}}/plugins/args?did=' + row._id, '代付参数设置:' + row['Name']);
+                        }
+                    },
+                    {
+                        text: "删除", class: 'ui button mini red', icon: 'icon delete', action: function (row) {
+                            top.layout.confirm('确认删除:' + row['Name'], function (res) {
+                                if (res) {
+                                    sals.post('', { type: 'remove', did: row._id }, function (res) {
+                                        if (res.success) {
+                                            top.layout.tip(res.message);
+                                            $table.Reload();
+                                        } else {
+                                            top.layout.notify(res.message, { class: 'error' });
+                                        }
+                                    })
+                                }
+                            })
+
+                        }
+                    }
+                ]
+            }
+        ];
+        var $table = sals.grid('.sals-grid-table', columnDefs);
+        $table.LoadData(window.location.href, {}, function (res) {
+            $table.AddHtml('<div class="disabled item">共有数据: %s 条</div>'.replace(/%s/gi, res.total));
+        });
+        $table.AddButton(
+      [
+        {
+          text: "安装插件", handle: function () {
+            top.layout.Page('{{user.manage}}/plugins/append', '安装插件' ); 
+          }
+        }
+      ]
+    );
+    });
+</script>
+{%endblock%}

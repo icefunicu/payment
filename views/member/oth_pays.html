@@ -1,0 +1,47 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+<h2>跑量监控</h2> 
+
+
+<div class="ui grid">
+    <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+  </div>
+  
+<script type="text/javascript">
+
+    sals.use(['table'], function () {
+        $('.search-button').on('click', function () {
+            //$table.Reload({keyd:$('[name="src-keyd"]').val()});
+        })
+
+
+        var columnDefs = [
+            {field: "orderNumber", header: "{{__('pages.order-number')}}"},
+            {
+                field: "order", header: "{{__('pages.text.order-money-mini')}}", formater: function (val, row) {
+                    return sals.money(val)
+                }
+            },
+            { field: "member", header: "{{__('pages.text.number')}}" },
+            { header: "{{__('pages.gateway.gateway')}}", field:'ateway_type'  },
+            {
+                header: "{{__('pages.order.state')}}", field:'state'
+            },
+
+            {
+                field: "row-handle", header: "{{__('fields.handle')}}", width: '500px', handle: [
+                    {
+                        text: "{{__('grid.handle-view')}}", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) { }
+                    },
+
+                ]
+            }
+        ];
+        var $table = sals.grid('.sals-grid-table', columnDefs, function (res) {
+            $table.AddHtml('<div class="disabled item">{{__("grid.data.total")}}:' + res.total + ' {{__("grid.data.count")}} {{__("grid.data.success")}}:' + res.moneyTotal + '</div>');
+        });
+        $table.LoadData('{{user.manage}}/members/otg-pays');
+    })
+</script>
+  
+{% endblock %}

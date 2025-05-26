@@ -1,0 +1,155 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+{% import "../shared/_tool.html" as tol %}
+
+<form class="ui form post-form mini" action="" autocomplete="off" spellcheck="false">
+<input type="hidden" name="user" value="{{query.did}}" /> 
+
+{# 开通渠道 #}
+<div class="ui card fluid orange ">
+    <div class="content">
+        <div class="header">渠道开通</div>
+    </div>
+    <div class="content">
+        <div class="ui cards">
+           
+        {%for channel in gateways%}
+        <div class="ui card {{tol.colors()}}"><div class="content">
+        <div class="ui checkbox toggle popup-popup" style="margin: 10px;" data-variation="inverted mini" data-content="{{channel['channel-desc']}}"  title="{{channel['channel-desc']}}">
+            <input type="checkbox" value="use" {%for charge in user['mbr-risk'].charges %}{%if charge.code == channel['channel-code']%}checked="checked"{%endif%}{%endfor%} name="pay-types-{{channel['channel-code']}}">
+            <label>{{channel['channel-name']}}</label>
+        </div>
+        <p>默认费率:{{channel['channel-charge']}}% &nbsp;&nbsp;&nbsp;&nbsp;支付代码:{{channel['channel-code']}}</p>
+        <div class="content">
+            <label>单笔订单费率:</label>
+            <div class="field mini "><input name="merchant-charge-{{channel['channel-code']}}" value="{%for charge in user['mbr-risk'].charges%}{%if charge.code == channel['channel-code']%}{{charge.charge}}{%endif%}{%endfor%}" type="number" min="0.01" max="100" step="0.01" ></div>
+            <label>订单-单笔最小:</label>
+            <div class="field mini "><input name="merchant-charge-mini-{{channel['channel-code']}}" value="{%for charge in user['mbr-risk'].charges%}{%if charge.code == channel['channel-code']%}{{charge.chargeMini}}{%endif%}{%endfor%}" type="number" ></div>
+            <label>订单-单笔最大:</label>
+            <div class="field mini "><input name="merchant-charge-max-{{channel['channel-code']}}" value="{%for charge in user['mbr-risk'].charges%}{%if charge.code == channel['channel-code']%}{{charge.chargeMax}}{%endif%}{%endfor%}" type="number" ></div>
+        </div>
+    </div>
+    <div class="extra content">{{channel['channel-desc']}}</div></div>
+        {%endfor%}
+    </div>
+    </div>
+    
+    <div class="extra content">
+        允许商户使用的渠道
+    </div>
+</div>
+
+{# 提交 限额 #}
+<div class="ui card fluid yellow">
+    <div class="content">
+        <div class="header">限制规则</div>
+    </div>
+    <div class="content">
+        <div class="ui form"> 
+                <div class="fluid field">
+                    <label>单日累计最大收款额度:</label>
+                    <input type="number" min="0" max="50000000" step="100" name="post-max-one" value="{{user['mbr-risk'].dayMax}}" >
+                </div>
+                <div class="fluid field">
+                <label>允许使用时间段:</label>
+            </div>
+                <div class="inline two fields">
+                    
+                <div class="fluid field calendar time">
+                    <label>起始时间:</label>
+                    <input type="text" name="use-time-start" class="fluid"  value="{{user['mbr-risk'].useTimeStart}}" >
+                </div> 
+                <div class="fluid field calendar time">
+                    <label>结束时间:</label>
+                    <input type="text" name="use-time-end" class="fluid" value="{{user['mbr-risk'].useTimeEnd}}" >
+                </div> 
+            </div>
+        </div>
+    </div> 
+</div>
+
+{# 结算周期 #}
+<div class="ui card fluid primary ">
+    <div class="content">
+        <div class="header">结算周期</div>
+    </div>
+    <div class="content">
+        <div class="ui radio slider mini checkbox">
+            <input type="radio" name="frequency" value="T0" {%if 'T0' == user['mbr-risk']['frequency'] %} checked="checked"{%endif%}>
+            <label>T0(实时)</label>
+        </div>
+        <div class="ui radio slider mini checkbox">
+            <input type="radio" value="T1" name="frequency" {%if 'T1' == user['mbr-risk']['frequency'] %} checked="checked"{%endif%}>
+            <label>T1(第二天0点)</label>
+        </div>
+        <div class="ui radio slider mini checkbox">
+            <input type="radio" value="T2" name="frequency" {%if 'T2' == user['mbr-risk']['frequency'] %} checked="checked"{%endif%}>
+            <label>T2(36小时后0点)</label>
+        </div>
+        <div class="ui radio slider mini checkbox">
+            <input type="radio" value="T7" name="frequency" {%if 'T7' == user['mbr-risk']['frequency'] %} checked="checked"{%endif%}>
+            <label>T7(第二周0点)</label>
+        </div>
+        <div class="ui radio slider mini checkbox">
+            <input type="radio" value="T30" name="frequency" {%if 'T30' == user['mbr-risk']['frequency'] %} checked="checked"{%endif%}>
+            <label>T30(下个月1日0点)</label>
+        </div>
+
+    </div>
+    <div class="extra content">
+        默认为 <code>T+0</code> 实时结算
+    </div>
+</div>
+{# 提现 限额 #}
+<div class="ui card fluid yellow">
+    <div class="content">
+        <div class="header">提款限额</div>
+    </div>
+    <div class="content">
+        <div class="ui form">
+            
+            <div class="inline two fields">
+                <div class="fluid field">
+                    <label>单笔最小限额</label>
+                    <input type="number" name="draw-min-one" placeholder="单笔限额" value="{%if user['mbr-risk']['draw_min_one'] %}{{user['mbr-risk']['draw_min_one']}}{%else%}200{%endif%}" min="1" max="1000000">元
+                </div>
+
+                <div class="fluid field">
+                    <label>单笔最大限额</label>
+                    <input type="number" name="draw-max-one" placeholder="单笔限额" value="{%if user['mbr-risk']['draw_max_one'] %}{{user['mbr-risk']['draw_max_one']}}{%else%}10000{%endif%}" min="1" max="1000000">元
+                </div>
+
+                <div class="fluid field">
+                    <label>单日限额</label>
+                    <input type="number" name="draw-max-day" class="fluid" placeholder="单日限额" value="{%if user['mbr-risk']['draw_max_day'] %}{{user['mbr-risk']['draw_max_day']}}{%else%}50000{%endif%}" min="1" max="1000000">元
+                </div> 
+            </div>
+            <div class="inline two fields">
+            <div class="fluid field">
+                <label>提现手续费:</label>
+                <input type="number" name="draw-money-settle" class="fluid" placeholder="单笔手续费" value="{%if user['mbr-risk']['draw-money-settle'] %}{{user['mbr-risk']['draw-money-settle']}}{%else%}0.1{%endif%}" min="0.01" step="0.01" max="100.0">
+                %
+            </div>
+
+            <div class="fluid field">
+                <label>单笔最多收取:</label>
+                <input type="number" name="draw-money-max" class="fluid" placeholder="单笔最多收取多少手续费" value="{%if user['mbr-risk']['draw-money-max'] %}{{user['mbr-risk']['draw-money-max']}}{%else%}50{%endif%}" min="0" step="1" max="10000.0">
+                元
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="extra content">超出限额后将禁止商户提款</div>
+</div>
+
+{% include '../shared/components/slot_submit.html' %}
+
+<script type="text/javascript">
+    sals.use(['ajaxForm','calendar'], function () {
+        $('.checkbox').checkbox();
+        $('.popup-popup').popup( );
+    });
+</script>
+</form>
+{%endblock%}

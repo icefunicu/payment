@@ -1,0 +1,58 @@
+{% extends './biz_base_layout.html' %}
+{% import "../shared/orderState.html" as oState %}
+{% block content %}
+<table class="table table-bordered table-striped table-hover text-center">
+ 
+    <tbody> 
+        <tr>
+            <td>订单号</td>
+            <td>{{data.cus_order_id}}</td>
+            <td>系统订单号</td>
+            <td>{{data.orderNumber}}</td>
+        </tr>
+        <tr>
+            <td >订单金额:</td>
+            <td>{{data.settle.order|money}}</td>
+            <td >实付款:</td>
+            <td>{{data.settle.payed|money}}</td>
+          </tr>
+          <tr>
+            <td >同步通知地址:</td>
+            <td>{{data.notify.url_back  }}</td>
+            <td >异步通知地址:</td>
+            <td>{{data.notify.url_notify }}</td>
+          </tr>
+          <tr>
+            <td >提交时间:</td>
+            <td>{{data.times.append | date}}</td>
+            <td >付款时间:</td>
+            <td>{{data.times.payed | date}}</td>
+          </tr>
+           <tr>
+            <td >通知时间:</td>
+            <td>{{data.times.notify | date}}</td>
+            <td >订单状态:</td>
+            <td>{{oState.state(data)}}</td>
+          </tr>
+
+          <tr>
+            <td >网关代码:</td>
+            <td>{{data.gateway_type.code}}</td>
+            <td >网关名称:</td>
+            <td>{{data.gateway_type.text}}</td>
+          </tr>
+          <tr>
+            <td >商户参数:</td>
+            <td colspan="5"><textarea rows="5" class="form-control" readonly>{{data.parms | tostring  }}</textarea>
+              </td> 
+          </tr>
+          <tr>
+            <td class="black">订单日志:</td>
+            <td colspan="5"><textarea rows="5" class="form-control" readonly>{{data.logs | loglist  }}</textarea>
+              </td> 
+          </tr>
+    </tbody>
+</table>
+
+
+{% endblock %}

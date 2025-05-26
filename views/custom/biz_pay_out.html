@@ -1,0 +1,64 @@
+{% extends './biz_base_layout.html' %}
+{% block content %}
+<h2>自主提现</h2>
+
+<form action="" class="post-form" autocomplete="off" spellcheck="false" method="post">
+
+    <div class="box box-success box-solid">
+        <div class="box-header">
+            当前账户资金
+        </div>
+        <div class="box-body">
+            
+            <h3>当前余额:<span class="text-aqua">{{customer.cashs.total | money}}</span>  </h3>
+            <h5 class="text-info">提现手续费:{{customer['mbr-risk']['draw-money-settle']}}% &nbsp;最高收取:{{customer['mbr-risk']['draw-money-max'] |money }}</h5>
+            <h5 class="text-info">单笔提款额:{{customer['mbr-risk']['draw_min_one']|money}} - {{customer['mbr-risk']['draw_max_one']|money}} &nbsp;单日累计出款:{{customer['mbr-risk']['draw_max_day'] |money }}</h5>
+
+        </div>
+    </div>
+
+  
+    
+    <div class="form-group">
+        <label>选择提款账户:</label>
+        <select class="form-control" name="account">
+            {%for acc in data%} 
+            <option value="{{acc._id}}">{{acc.account}} ({{acc.accc_type_text}} - {{acc.name}} - {{acc.phone}})</option> 
+            {%endfor%}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>请输入提款金额:</label>
+        <input type="password" min="1" max="{{customer['mbr-risk']['draw_max_one']}}" step="0.01" class="form-control" name="money" autocomplete="off" placeholder="请输入提款金额">
+    </div>
+
+    <div class="form-group">
+        <label>请输入提现密码:</label>
+        <input type="password" class="form-control" name="password" autocomplete="off" placeholder="请输入提现密码">
+    </div>
+
+    <div class="form-group">
+        <label>通知手机:</label>
+        <input type="password" class="form-control" name="phone" autocomplete="off" placeholder="请输入接收通知的手机号码">
+    </div>
+
+    <div class="form-group">
+        <label>通知邮箱:</label>
+        <input type="password" class="form-control" name="email" autocomplete="off" placeholder="请输入接收通知的邮箱地址">
+    </div>
+    
+    <div class="col-sm-12">
+        <button type="button" class="btn btn-primary btn-post"><i class="fa fa-save"></i> 确认提现</button>
+    </div>
+</form>
+<script>
+    jQuery(function(){
+        setTimeout(function() {
+            $('[name="money"]').attr({'type':'number'});
+            $('[name="phone"]').attr({'type':'tel'});
+            $('[name="email"]').attr({'type':'email'}); 
+        }, 300);
+    })
+</script>
+{% endblock %}

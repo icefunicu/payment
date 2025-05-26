@@ -1,0 +1,167 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+{% import "../shared/orderState.html" as oState %}
+<table class="ui celled table">
+     
+    <tbody>
+      <tr>
+        <td class="negative">{{__('pages.text.order-number')}}:</td>
+        <td>{{order.orderNumber}}</td>
+        <td class="negative">{{__('pages.text.order-user')}}:</td>
+        <td>{{order.cus_order_id}}</td>
+      </tr>
+      <tr>
+        <td class="negative">{{__('pages.text.order-money')}}:</td>
+        <td>{{order.settle.order|money}}</td>
+        <td class="negative">{{__('pages.text.order-money-pay')}}:</td>
+        <td>{{order.settle.payed|money}}</td>
+      </tr>
+      <tr>
+        <td class="negative">{{__('pages.text.order-gateway-money')}}:</td>
+        <td>{{order.settle.channel}}%</td>
+        <td class="negative">{{__('pages.text.order-user-money')}}:</td>
+        <td>{{order.settle.procedure}}%</td>
+      </tr>
+      <tr>
+        <td class="negative">{{__('pages.text.order-notify')}}:</td>
+        <td>{{order.notify.url_back | safe  }}</td>
+        <td class="negative">{{__('pages.text.order-callback')}}:</td>
+        <td>{{order.notify.url_notify | safe}}</td>
+      </tr>
+      <tr>
+        <td class="negative">{{__('pages.text.order-profit')}}:</td>
+        <td colspan="3" >{{__('pages.text.order-merchant-profit')}}:{{order.settle.profit|money}} {{__('pages.text.order-sys-profit')}}:{{order.settle.system|money}}</td> 
+      </tr>
+
+      <tr>
+        <td class="negative">{{__('pages.text.order-append-time')}}:</td>
+        <td>{{order.times.append | date}}</td>
+        <td class="negative">{{__('pages.text.order-payment-time')}}:</td>
+        <td>{{order.times.payed | date}}</td>
+      </tr>
+       <tr>
+        <td class="negative">{{__('pages.text.order-notify-time')}}:</td>
+        <td>{{order.times.notify | date}}</td>
+        <td class="negative">{{__('pages.text.order-state')}}:</td>
+        <td>{{oState.state(order)}}</td>
+      </tr>
+
+      <tr>
+        <td class="pink">{{__('pages.text.order-gateway-code')}}:</td>
+        <td>{{order.gateway_type.code}}</td>
+        <td class="pink">{{__('pages.text.order-gateway-text')}}:</td>
+        <td>{{order.gateway_type.text}}</td>
+      </tr>
+
+      <tr>
+        <td class="pink">{{__('pages.text.order-channel-name')}}:</td>
+        <td>{{order.pay_type.gName}}</td>
+        <td class="pink">{{__('pages.text.order-channel-code')}}:</td>
+        <td>{{order.pay_type.Away}}</td>
+      </tr>
+      <tr>
+        <td class="pink">{{__('pages.text.channel-pay-code')}}:</td>
+        <td>{{order.pay_type.gateway}}</td>
+        <td class="pink">{{__('pages.text.channel-pay-gateway')}}:</td>
+        <td>{{order.pay_type.text}}</td>
+      </tr>
+      <tr>
+        <td class="pink">{{__('pages.text.channel-gateway-name')}}:</td>
+        <td>{{order.pay_type.Name}}</td>
+        <td class="pink">{{__('pages.text.channel-gateway-ver')}}:</td>
+        <td>{{order.pay_type.Version}}</td>
+      </tr>
+
+      <tr>
+        <td class="green">{{__('pages.text.mamber-name')}}:</td>
+        <td>{{order.member['mbr-name']}}</td>
+        <td class="green">{{__('pages.text.mamber-account')}}:</td>
+        <td>{{order.member['mbr-account']}}</td>
+      </tr>
+      <tr>
+        <td class="green">{{__('pages.text.mamber-pid')}}:</td>
+        <td>{{order.member['mbr-pid']}}</td>
+        <td class="green">{{__('pages.text.mamber-state')}}:</td>
+        <td>{{order.member['mbr-is-use']}}</td>
+      </tr>
+      <tr>
+        <td class="green">{{__('pages.text.mamber-is-agency')}}:</td>
+        <td>{{order.member['mbr-acc-agent-type']}}</td>
+        <td class="green">{{__('pages.text.mamber-level')}}:</td>
+        <td>{{order.member['mbr-acc-type']}}</td>
+      </tr>
+      <tr>
+        <td class="green">{{__('pages.text.mamber-use-pay')}}:</td>
+        <td>{{order.member['mbr-access-used']}}</td>
+        <td class="green">{{__('pages.text.mamber-use-out')}}:</td>
+        <td>{{order.member['mbr-api-pay-use']}}</td>
+      </tr>
+      <tr>
+        <td class="green">{{__('pages.text.mamber-phone')}}:</td>
+        <td>{{order.member['mbr-phone']}}</td>
+        <td class="green">{{__('pages.text.mamber-qq')}}:</td>
+        <td>{{order.member['mbr-qq']}}</td>
+      </tr>
+      <tr>
+        <td class="green">{{__('pages.text.mamber-website')}}:</td>
+        <td>{{order.member['mbr-web-site']}}</td>
+        <td class="green">{{__('pages.text.mamber-url')}}:</td>
+        <td><a href="{{order.member['mbr-web-url']}}" target="_blank">{{order.member['mbr-web-url']}}</a></td>
+      </tr>
+      <tr>
+        <td class="green">{{__('pages.text.mamber-use-time')}}:</td>
+        <td>{{order.member['mbr-risk']['useTimeStart']}}-{{order.member['mbr-risk']['useTimeEnd']}}</td>
+        <td class="green">{{__('pages.text.mamber-out-model')}}:</td>
+        <td>{{order.member['mbr-risk']['frequency']}}</td>
+      </tr>
+      <tr>
+        <td class="orange">{{__('pages.text.mamber-one-money')}}:</td>
+        <td>{{order.member['mbr-risk']['draw_max_one'] | money}}</td>
+        <td class="orange">{{__('pages.text.mamber-one-money-day')}}:</td>
+        <td>{{order.member['mbr-risk']['draw_max_day'] | money}}</td>
+      </tr>
+      <tr>
+        <td class="orange">{{__('pages.text.mamber-profit-money-profit')}}:</td>
+        <td>{{order.member['mbr-risk']['draw-money-settle'] }}%</td>
+        <td class="orange">{{__('pages.text.mamber-profit-oney-max')}}:</td>
+        <td>{{order.member['mbr-risk']['draw-money-max'] | money}}</td>
+      </tr>
+
+      <tr>
+        <td class="negative">{{__('pages.text.mamber-args')}}:</td>
+        <td colspan="3"><div class="ui form " >
+          <div class="field"> 
+            <textarea>{{order.parms | tostring  }}</textarea>
+          </div>
+        </div>
+          </td> 
+      </tr>
+      <tr>
+        <td class="black">{{__('pages.text.order-logs')}}:</td>
+        <td colspan="3"><div class="ui form " >
+          <div class="field"> 
+            <textarea>{{order.logs | loglist  }}</textarea>
+          </div>
+        </div>
+          </td> 
+      </tr>
+      <tr>
+        <td class="blue">{{__('pages.text.notify-logs')}}:<br/>{{__n('pages.text.notify-count',order.NotifyCount)}}</td>
+        <td colspan="3"><div class="ui form " >
+          <div class="field"> 
+            <textarea>{%for result in order.NotifyResults%}{{result|tostring}}
+-------------------------------------------------------------
+              {%endfor%}</textarea>
+          </div>
+        </div>
+          </td> 
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="ui  message ">  
+    <div class="content">
+    {{__('pages.text.order-details-help')|safe}}
+  </div>
+</div>
+{%endblock%}

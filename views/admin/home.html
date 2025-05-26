@@ -1,0 +1,143 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+<h2 class="ui header">{{__('layout.title')}}</h2>
+
+<div class="ui four cards">
+    {%for data in datas%}
+    <div class="ui horizontal yellow card">
+        <div class="content center aligned">
+            <i class="icon {{data.icon}}"></i>
+        </div>
+        <div class="content">
+            <div class="header">{{data.title}}:</div>
+            <div class="meta">
+                <div class="ui statistic small {{data.color}}">
+                    <div class="value ">{{data.val}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="content"></div>
+    </div>
+    {%endfor%}
+</div>
+
+
+<div class="ui grid">
+    {# 快捷菜单 #}
+    <div class="eight wide column">
+        <div class="ui fluid card">
+            <div class="content">
+                <div class="header">{{__('layout.dashboard.quick-menu')}}</div>
+            </div>
+            <div class="content">
+                <div class="ui four column grid">
+
+                    <div class="wide column">
+                        <button class="ui blue basic button huge animated order-in-button">
+                            <div class="visible content"><i class="list icon"></i></div>
+                            <div class="hidden content">{{__('pages.text.order-manage')}}</div>
+                        </button>
+                    </div>
+                    <div class="wide column">
+                        <button class="ui purple basic button huge animated user-button">
+                            <div class="visible content"><i class="users icon"></i></div>
+                            <div class="hidden content">{{__('pages.text.user-manage')}}</div>
+                        </button>
+                    </div>
+
+                    <div class="wide column">
+                        <button class="ui teal basic button huge animated order-out-button">
+                            <div class="visible content"><i class="icon euro sign"></i></div>
+                            <div class="hidden content">{{__('pages.text.order-out')}}</div>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        {# 用户与基础数据 #}
+        <div class="ui fluid">
+            <div class="ui segment small">
+                <img src="{{user.face}}" class="ui centered small image circular" />
+                <h2 class="ui center aligned header">{{user.nickname}}</h2>
+                <div class="ui horizontal divider"><i class="icon circle outline"></i></div>
+                <p class="ui center aligned header" style="margin: 0;">{{__('fields.domain')}}:{{domain}}</p>
+                <p class="ui center aligned header" style="margin: 0;">{{__('fields.sys-ver')}}:{{ver}}</p>
+                <p class="ui center aligned header" style="margin: 0;">
+                    {{__('fields.platform')}}:{{platform.type}}&nbsp;{{platform.release}}</p>
+                <p class="ui center aligned header" style="margin: 0;">NodeJs:{{platform.versions.node}}</p>
+                <p class="ui center aligned header" style="margin: 0;">{{__('fields.database')}}:{{database.version}}
+                </p>
+            </div>
+        </div>
+
+    </div>
+    {# 简易折线图 #}
+    <div class="eight wide column">
+
+        <div class="ui fluid card">
+
+            <div class="content">
+                <div id="container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    sals.use('chart', function () {
+        $('.order-in-button').on('click', function () {
+            top.layout.TabPage.AddPage("{{__('pages.text.order-manage')}}", "{{constant.ADMIN_MANAGE_PATH}}/orders/order-in", 'align left icon');
+        })
+        $('.user-button').on('click',function(){
+            top.layout.TabPage.AddPage("{{__('pages.text.user-manage')}}", "{{constant.ADMIN_MANAGE_PATH}}/members/manages", 'user friends icon');
+        })
+        $('.order-out-button').on('click', function () {
+            top.layout.TabPage.AddPage("{{__('pages.text.order-out')}}", "{{constant.ADMIN_MANAGE_PATH}}/orders/order-out", 'icon euro sign ');
+        })
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'spline'
+            },
+            credits: {
+                enabled: false,//去掉水印
+            },
+            title: {
+                text: "{{__('pages.text.order-data-list')}}"
+            },
+
+            yAxis: {
+                title: {
+                    text: false
+                }
+            },
+            xAxis: {
+                type: 'datetime'  
+            },
+            legend: false,//显示数据名
+            plotOptions: {
+                spline: {
+                    lineWidth: 4,
+                    pointInterval: 3.6e6,
+                    pointStart: Date.now()
+                },
+                
+            },
+
+            series: [{
+                name: "{{__('pages.text.order-list-in')}}",
+                data: [4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
+                    7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4 ]
+            }, {
+                name: "{{__('pages.text.order-list-out')}}",
+                data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.3, 0.0,
+                    0.0, 0.4, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+            }]
+        });
+    });
+
+</script>
+{%endblock%}

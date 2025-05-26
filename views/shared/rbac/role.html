@@ -1,0 +1,50 @@
+{% extends '../layout.html' %}
+{% block head %}
+{%endblock%}
+
+{% block content %}
+
+<div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    var columnDefs = [
+      { field: "row-number" },
+      //{ field: "row-checkbox" },
+      { field: "role-name", header: "{{__('fields.role-name')}}" },
+      { field: "role-desc", header: "{{__('fields.describe')}}" },
+
+      {
+        field: "role-used", header: "{{__('fields.on-used')}}", flex: 1, formater: function (val) {
+          return val ? "{{__('fields.enable')}}" : "{{__('fields.disable')}}";
+        }
+      },
+      {
+        field: "row-handle", header: "{{__('fields.handle')}}", handle: [
+          {
+            text: "{{__('fields.auth-manage')}}", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) {
+              top.layout.Page('{{user.manage}}/rbac/role-auth?did=' + row._id, row['role-name'] + ':');
+            }
+          },
+          {
+            text: "{{__('fields.edit')}}", class: 'ui button mini yellow', icon: 'icon edit', action: function (row) {
+              top.layout.Page('{{user.manage}}/rbac/role-edit?did=' + row._id + '&type=edit', "{{__('fields.edit-role')}}");
+            }
+          }
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs, false);
+    $table.LoadData('{{user.manage}}/rbac/role');
+    $table.AddButton(
+      [
+        {
+          text: "{{__('fields.role-append')}}", handle: function () {
+            top.layout.Page('{{user.manage}}/rbac/role-edit', "{{__('fields.role-append')}}");
+          }
+        }
+      ]
+    );
+  })
+</script>
+{%endblock%}

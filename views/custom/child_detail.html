@@ -1,0 +1,89 @@
+{% extends './biz_base_layout.html' %}
+
+
+{% block content %}
+<table class="table table-bordered table-striped table-hover text-center">
+    <tbody>
+        <tr>
+            <td class="bg-blue">账号:</td>
+            <td>{{data['mbr-account']}}</td>
+            <td class="bg-blue">昵称:</td>
+            <td>{{data['mbr-name']}}</td>
+        </tr>
+
+        <tr>
+            <td class="bg-blue">编号:</td>
+            <td>{{data['mbr-pid']}}</td>
+            <td class="bg-blue">账户类型:</td>
+            <td>{{data['mbr-acc-type']}}</td>
+        </tr>
+
+        <tr>
+            <td class="bg-blue">联系手机:</td>
+            <td>{{data['mbr-phone']}}</td>
+            <td class="bg-blue">联系QQ:</td>
+            <td>{{data['mbr-qq']}}</td>
+        </tr>
+
+        <tr>
+            <td class="bg-blue">API接入:</td>
+            <td>{{data['mbr-access-used']}}</td>
+            <td class="bg-blue">API出款:</td>
+            <td>{{data['mbr-api-pay-use']}}</td>
+        </tr>
+
+        <tr>
+            <td class="bg-blue">站点名称:</td>
+            <td>{{data['mbr-web-site']}}</td>
+            <td class="bg-blue">网站网址:</td>
+            <td><a target="_blank" href="{{data['mbr-web-url']}}">{{data['mbr-web-url']}}</a></td>
+        </tr>
+
+        <tr>
+            <td class="bg-blue">接入日期:</td>
+            <td>{{data['add_time']|date}}</td>
+            <td class="bg-blue">有效期:</td>
+            <td>{{data['mbr-end-date']|default(长期)}}</td>
+        </tr>
+
+        <tr>
+            <td class="bg-purple" colspan="4">开通渠道:</td>
+        </tr>
+        {%for charge in data['mbr-risk'].charges%}
+            {%for g in gateways%}{%if charge.code == g['channel-code'] %}
+                <tr><td>{{g['channel-name']}}({{charge.code}})</td>
+                <td>费率:{{charge['charge']}}%</td>
+                <td>单笔最小:{{charge['chargeMini']|money}}</td>
+                <td>单笔最大:{{charge['chargeMax']|money}}</td></tr>
+                {%endif%}
+            {%endfor%}
+        {% else %}
+            <tr><td colspan="10" class="text-muted">暂未开通任何渠道</td></tr>
+        {%endfor%} 
+        
+        <tr>
+            <td class="bg-green" colspan="4">限制规则:</td>
+        </tr>
+       
+        <tr>
+            <td>单日最大收款:{{data['mbr-risk'].dayMax|money}}</td>
+            <td>使用时段:{{data['mbr-risk'].useTimeStart}} - {{data['mbr-risk'].useTimeEnd}}</td>
+            <td>结算周期:{{data['mbr-risk'].frequency}}</td>
+            <td></td>
+        </tr> 
+
+        <tr>
+            <td class="bg-olive" colspan="4">提款限额:</td>
+        </tr>
+       
+        <tr>
+            <td>单笔最小:{{data['mbr-risk'].draw_min_one|money}}</td>
+            <td>单笔最大:{{data['mbr-risk'].draw_max_one|money}}</td>
+            <td>单日限额:{{data['mbr-risk'].draw_max_day|money}}</td>
+            <td>手续费:{{data['mbr-risk']['draw-money-settle']}}% 最高:{{data['mbr-risk']['draw-money-max']|money}}</td>
+        </tr> 
+
+    </tbody>
+</table>
+
+{% endblock%}

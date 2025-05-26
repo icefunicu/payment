@@ -1,0 +1,93 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+{% import "../shared/forms.html" as forms %}
+<h2 class="ui header">{{__('pages.title.setting')}}</h2>
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+    <div class="ui top attached tabs menu">
+        <div class="active item" data-tab="config">{{__('config.title')}}</div>
+        <div class="item" data-tab="kefu">{{__('config.service')}}</div> 
+        <div class="item" data-tab="mail">{{__('mail.title')}}</div>
+        <div class="item" data-tab="phone">{{__('phone.title')}}</div>
+        <div class="item" data-tab="three">{{__('member.memberer')}}</div> 
+    </div>
+    <div class="ui bottom attached active tab segment" data-tab="config">
+        {{ forms.text('site-title',__('config.site-title'),config['site-title']) }}
+
+        {{ forms.text('site-name',__('config.site-name'),config['site-name']) }}
+
+        {{ forms.checkbox('is-open',__('config.site-is-open'),'is-open',config['is-open']=='on') }}
+
+        {{ forms.textarea('site-stop-message',__('config.site-stop-message'),config['site-stop-message'],__('config.site-stop-message-def')) }}
+
+        {{ forms.image('site-logo',__('config.site-logo'),config['site-logo']) }}
+
+        {{ forms.text('site-number',__('config.site-number'),config['site-number']) }}
+        
+    </div>
+
+    <div class="ui bottom attached tab segment" data-tab="kefu">
+
+        {{ forms.text('kf-phone',__('config.service-phone'),config['kf-phone']) }}
+
+        {{ forms.text('kf-qq',__('config.service-qq'),config['kf-qq']) }}
+
+        {{ forms.text('kf-email',__('config.service-email'),config['kf-email']) }}
+
+        {{ forms.text('kf-mobile',__('config.service-mobile'),config['kf-mobile']) }}
+
+        {{ forms.text('kf-400',__('config.service-400'),config['kf-400']) }}
+
+        
+    </div>
+
+
+    <div class="ui bottom attached tab segment" data-tab="mail">
+
+        {{ forms.text('mail-smtp',__('mail.smtp'),config['mail-smtp']) }}
+
+        {{ forms.text('smtp-port',__('mail.port'),config['smtp-port']) }}
+
+        {{ forms.text('mail-account',__('mail.account'),config['mail-account']) }}
+
+        {{ forms.text('mail-password',__('mail.password'),'',__('mail.password-placeholder')) }}
+        
+    </div>
+
+    <div class="ui bottom attached tab segment" data-tab="phone">
+        {{ forms.checkbox('sns_port_use',__('config.sns_port_use'),'sns_port_use',config['sns_port_use']=='on') }}
+
+        {%for arg in snsData %}
+            {{ forms.text(arg.name,arg.text,arg.val) }}
+        {%endfor%}
+         
+       
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="three">
+        {{ forms.checkbox('cus-reg-open',__('config.use-reg'),'cus-reg-open',config['cus-reg-open']=='on') }}
+
+        {{ forms.image('cus-login-bg-image',__('config.login-bg-image'),config['cus-login-bg-image']) }}
+ 
+        {{ forms.text('sys-order-lenght',__('config.order-num-len'),config['sys-order-lenght']) }}
+
+        {{ forms.text('sys-order-prefix',__('config.opder-prefix'),config['sys-order-prefix']) }}
+
+        {{ forms.select('sys-order-type',__('config.order-num-type'),['纯数字','字母数字组合','当前日期时间','当前日期时间+随机数','当前日期时间+随机字符','GUID'],config['sys-order-type']) }}
+    </div>
+
+    {% include '../shared/components/slot_submit.html' %}
+    <script type="text/javascript">
+        sals.use(['ajaxForm','calendar','uploader'],function(){
+            $('.upload').click(function(){
+                var $this = $(this);
+                sals.uploader(function (files) {
+                    if (files) {
+                        $this.val(files[0].url)
+                    }
+                })
+            })
+        });
+        
+    </script>
+</form>
+
+{%endblock%}

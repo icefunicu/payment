@@ -1,0 +1,59 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+{% block content %}
+
+<form class="ui form post-form" action="" method="post" autocomplete="off" spellcheck="false">
+    {%for channel in data%}
+        <h3  style="clear:both;">{{channel['gName']}} : </h3>
+        {%for gateway in channel.Gateways%}
+        <p style="clear:both;">
+            <div class="ui" style="float: left;margin-right: 10px;">
+                <label>{{gateway.Text}}:</label><label> 
+            </div>
+            
+            <div class="ui toggle checkbox" style="float:left;margin-right:10px ;">
+                <input type="checkbox" {%for gc in gChannel['channel-gateways']%}{%if gc.gateway == channel.Away and gc.channel == gateway.Gateway%}checked="checked"{%endif%}{%endfor%} name="used" value="{{channel.Away}}|{{gateway.Gateway}}">
+                <label>{{__('gateway.text-bound-text')|safe}}</label>
+            </div>
+
+            <div class="ui slider checkbox" style="float:left;margin-right:10px ;">
+                <input type="radio" {%if gChannel['channel-default'].gateway == channel.Away and gChannel['channel-default'].channel == gateway.Gateway%}checked="checked"{%endif%} name="defval" value="{{channel.Away}}|{{gateway.Gateway}}">
+                <label>{{__('gateway.text-bound-default')|safe}}</label>
+            </div>
+            <div class="ui " style="float:left;"> 
+                <label>{{__('gateway.text-bound-code')|safe}}:{{gateway.Gateway}}</label>
+            </div>
+        </p>
+        <div  style="clear:both;"></div>
+        {%endfor%}
+    {%endfor%}
+
+
+    <div class="ui message ">  
+        <div class="content">
+            {{__('gateway.channel-bound-page-help')|safe}}
+      </div>
+    </div>
+    {% include '../shared/components/slot_submit.html' %}
+</form>
+<script type="text/javascript">
+    sals.use(['ajaxForm'],function(){
+        $('form.post-form').ajaxForm({
+            complete:function(){
+                $('.profile-save').removeClass('loading');
+                $('form.post-form').removeClass('loading');
+            },
+            error: function (data) {
+                top.layout.notify(data.statusText, { title: data.status, class: 'error' });
+            },
+            success: function (res) { 
+                if (res.success) {
+                    top.layout.tip(res.message);
+                } else {
+                    top.layout.notify(res.message, { class: 'error' });
+                }
+            }
+        });
+    })
+</script>
+{%endblock%}

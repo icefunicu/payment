@@ -1,0 +1,369 @@
+{
+	"lang-name": "日本語",
+	"layout": {
+		"title": "Sals システム",
+		"caption": "Sals 支付系统",
+		"system": {
+			"name": "SalsNET 开发框架",
+			"ver": "v3.2"
+		},
+		"status": {
+			"text": "欢迎使用 Sals 支付系统 管理后台",
+			"version": "SalsNET"
+		},
+		"control": {
+			"user-info": "个人信息",
+			"change-password": "修改密码",
+			"support-center": "帮助中心",
+			"feedback": "问题反馈",
+			"change-user": "切换用户",
+			"login-out": "退出系统",
+			"theme-setting": "系统设置",
+			"clear-cache": "清理缓存",
+			"clear-cache-success": "清理缓存成功"
+		},
+		"toolbar": {
+			"button-switch-sidebar": "展开/折叠菜单",
+			"button-home": "首页",
+			"button-refresh": "刷新页面",
+			"button-message-center": "消息中心",
+			"button-full-screen": "全屏/退出全屏",
+			"button-language": "语言",
+			"button-lock-layout": "锁定界面",
+			"button-customer": "商户后台"
+		},
+		"tabs": {
+			"home-page": "控制台",
+			"name": "标签页",
+			"refresh": "刷新",
+			"position": "定位",
+			"close": "关闭",
+			"close-other": "关闭其他",
+			"close-all": "关闭全部",
+			"close-left": "关闭左侧",
+			"close-right": "关闭右侧",
+			"roll-left": "向左滚动",
+			"roll-right": "向右滚动"
+		},
+		"alter": {
+			"login-out": "确认退出系统 ?",
+			"lock-message": "暂时为您锁定界面",
+			"lock-input": "请输入密码后解锁"
+		},
+		"dashboard": {
+			"quick-menu": "快捷菜单"
+		}
+	},
+	"modal": {
+		"title": "系统提醒",
+		"button": {
+			"yes": "确定",
+			"cancel": "取消",
+			"no": "否",
+			"retry": "重试",
+			"close": "关闭"
+		},
+		"saveed": "确认提交",
+		"save": "保存数据",
+		"title-view": "数据详情",
+		"title-edit": "编辑数据",
+		"welcome-back": ""
+	},
+	"languages": {
+		"zh": "简体中文",
+		"en": "English",
+		"ja": "日本語"
+	},
+	"feedback": {
+		"succ": "成功",
+		"modify-success": "修改成功",
+		"fail": "失败",
+		"error": "错误",
+		"catch": "服务器异常,请稍后重试"
+	},
+	"input": {
+		"sign-up": "注册",
+		"login-in": "登陆",
+		"password": "请输入密码",
+		"auth-code": "请输入验证码",
+		"admin": {
+			"account": "请输入管理员账号"
+		},
+		"input-account": "请输入账号",
+		"input-password": "请输入密码",
+		"input-captcha-error": "验证码错误",
+		"acc-pwd-error": "用户名或密码错误",
+		"old-password": "请输入原密码",
+		"new-password1": "请输入新密码",
+		"new-password2": "确认新密码",
+		"auth-code-refresh": "点击刷新"
+	},
+	"tip-message": {
+		"acc-pwd-error": "用户名或密码错误",
+		"cant-empty": "有未填写的项目",
+		"old-password-error": "原密码不正确",
+		"confirm-password-error": "两次密码不一致",
+		"new-password-length": "密码长度不能小于%s位",
+		"password-alter-success": "密码修改成功",
+		"account-exist": "账号已存在",
+		"alter-success": "恭喜!操作成功",
+		"user-not-found": "用户不存在",
+		"need-login": "请登录后重试",
+		"page_load_error": "页面加载失败!",
+		"try_again_later": "请稍后重试",
+		"not_support": "暂无法支持该类型",
+		"no-message": "暂未收到任何消息",
+		"msg404": "您访问的页面无法访问",
+		"go-home": "返回首页",
+		"feedback": "您的问题,将发送到开发者邮箱",
+		"feedback-tip": "请尽量详细描述您遇到的问题",
+		"feedback-sended": "反馈邮件已送达"
+	},
+	"file-manage": {
+		"title": "文件管理",
+		"no-files": "<div style='padding: 70px;text-align: center;width: 100%;font-size:1.6rem' class='ui text grey'><i class='folder open outline icon'></i> %s</div>",
+		"no-files-text": "此文件夹为空",
+		"create-folder": "输入文件夹名称",
+		"drop-dir-forbid": "禁止删除文件夹",
+		"contextmenu": {
+			"parent": "上一层",
+			"download": "下载",
+			"rename": "重命名",
+			"remove": "删除",
+			"more": "更多",
+			"copy": "复制",
+			"paste": "粘贴",
+			"cut": "剪切",
+			"replace": "替换",
+			"attribute": "文件属性",
+			"preview": "预览",
+			"upload": "上传文件",
+			"image": "批量上传",
+			"folder": "新建文件夹",
+			"refresh": "刷新",
+			"remove-confirm": "确认删除?"
+		},
+		"more": {
+			"name": "多选模式",
+			"action": "确定",
+			"select-all": "全选",
+			"select-invert": "反选",
+			"select-none": "全不选"
+		},
+		"upload": {
+			"abandon": "该类型文件禁止上传:%s"
+		}
+	},
+	"grid": {
+		"handle-view": "详情",
+		"handle-edit": "编辑",
+		"handle-remove": "删除",
+		"handle": "管理",
+		"print": "打印",
+		"delete": "删除",
+		"select-data": "选中数据",
+		"page-data": "当前页",
+		"all-data": "全部数据",
+		"exports": "导出",
+		"page-size": "每页",
+		"search": "搜索...",
+		"select-one-least": "请至少选中一行数据",
+		"remove-page-selected": "确认删除所选数据?",
+		"remove-page-all": "确认删除所有数据?",
+		"remove-page-data": "确认删除当前页面所有数据?",
+		"remove-data": "确认删除该数据?",
+		"print-bottom": "当前:第{0}页 每页:{1}项 共:{2}项 打印:{3}至{4}项",
+		"no-bottom": "不带统计",
+		"has-bottom": "带统计",
+		"no-data": "暂无任何数据",
+		"load-data-error": "加载数据时出错,请重新尝试",
+		"total": ""
+	},
+	"member": {
+		"name": "商户名",
+		"title": {
+			"append": "商户开户"
+		},
+		"account": "登陆账号",
+		"password": "登陆密码",
+		"info": {
+			"website": "站点名称",
+			"siteurl": "网站网址",
+			"joindate": "入驻时间"
+		},
+		"on-used": "是否启用",
+		"enable": "启用",
+		"disable": "停用",
+		"describe": "商户描述",
+		"endtime": "有效期",
+		"enddate": "到期后停用账号,不设置为则为长期有效",
+		"risk": "风险控制",
+		"edit": "编辑",
+		"ret-password": "重置密码",
+		"memberer": ""
+	},
+	"fields": {
+		"select-default": "请选择",
+		"nickname": "昵称",
+		"birthday": "生日",
+		"about-me": "自我介绍",
+		"domain": "网址",
+		"sys-ver": "程序版本",
+		"platform": "操作系统",
+		"database": "数据库",
+		"search": "搜索",
+		"no-data": "暂无任何数据",
+		"role-default": "顶级角色",
+		"account": "账号",
+		"describe": "描述",
+		"part-of-role": "隶属于",
+		"on-used": "是否启用",
+		"enable": "启用",
+		"disable": "停用",
+		"handle": "管理",
+		"edit": "编辑",
+		"edit-user": "编辑用户",
+		"user-append": "新增用户",
+		"role-name": "角色名称",
+		"auth-manage": "配置权限",
+		"edit-role": "编辑角色",
+		"role-append": "新曾角色",
+		"password": "密码",
+		"edit-password": "用户不能修改密码",
+		"alway-password": "密码永不过期",
+		"group": "分类",
+		"operation": "操作",
+		"theme-config": "",
+		"apply": "",
+		"remove": "",
+		"teme-page-help": "",
+		"remove-confirm": "",
+		"apply-use": "",
+		"theme-editor": "",
+		"doc-cur-name": "",
+		"new-doc-name": "",
+		"editor-empty-help": "",
+		"input-doc-name": "",
+		"no-doc-save": "",
+		"append-time": "",
+		"author": ""
+	},
+	"pages": {
+		"title": {
+			"setting": "系统参数设置"
+		}
+	},
+	"javascript": {
+		"calendar": {
+			"days": [
+				"日",
+				"一",
+				"二",
+				"三",
+				"四",
+				"五",
+				"六"
+			],
+			"months": [
+				"一月",
+				"二月",
+				"三月",
+				"四月",
+				"五月",
+				"六月",
+				"七月",
+				"八月",
+				"九月",
+				"十月",
+				"十一月",
+				"十二月"
+			],
+			"monthsShort": [
+				"1月",
+				"2月",
+				"3月",
+				"4月",
+				"5月",
+				"6月",
+				"7月",
+				"8月",
+				"9月",
+				"10月",
+				"11月",
+				"12月"
+			],
+			"today": "今天",
+			"now": "现在",
+			"am": "上午",
+			"pm": "下午"
+		}
+	},
+	"mail": {
+		"title": "邮箱配置",
+		"smtp": "SMTP 服务器",
+		"port": "服务器端口",
+		"account": "账户",
+		"password": "密码",
+		"password-placeholder": "密码设置后不显示"
+	},
+	"config": {
+		"title": "基础配置",
+		"service": "",
+		"site-title": "",
+		"site-name": "",
+		"site-is-open": "",
+		"site-stop-message": "",
+		"site-stop-message-def": "",
+		"site-logo": "",
+		"site-number": "",
+		"service-phone": "",
+		"service-qq": "",
+		"service-email": "",
+		"service-mobile": "",
+		"service-400": "",
+		"use-reg": "",
+		"login-bg-image": "",
+		"order-num-len": "",
+		"opder-prefix": "",
+		"order-num-type": ""
+	},
+	"order": {
+		"gateway": {
+			"参数不能为空": "参数[%s]不能为空",
+			"无法识别您的参数": "无法识别您的参数",
+			"商户不存在": "商户不存在",
+			"undefined": "参数不合法",
+			"金额不合法": "金额不合法",
+			"金额太小": "金额太小",
+			"签名不正确": "签名不正确"
+		}
+	},
+	"gateway": {
+		"new-gateway": "",
+		"app-name": "",
+		"app-name-help": "",
+		"app-code": "",
+		"code-js-help": "",
+		"app-page-help": "",
+		"channel-manage": "",
+		"gateway-away": "",
+		"gateway-ver": "",
+		"gateway-desc": "",
+		"gateway-name": "",
+		"gateway-args-edit": "",
+		"gateway-away-update": ""
+	},
+	"news": {
+		"title": "",
+		"type": "",
+		"type-c": "",
+		"new-edit": "",
+		"new-add": "",
+		"type-a": "",
+		"type-b": "",
+		"specify-user": "",
+		"specify-user-help": "",
+		"html-help": "",
+		"page-help": ""
+	}
+}

@@ -1,0 +1,27 @@
+{
+    "name": "支付系统",
+    "script": "../app.js",
+    "cwd": "../",
+    "args": "PM2 MHG SHARP",
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "out_file": "./runtime/logs/node.stdout.log",
+    "error_file": "./runtime/logs/error.log",
+    "combine_logs": false,
+    "pid_file": "./runtime/pm2.pid",
+    "instances": 2,
+    "exec_mode": "cluster",
+    "max_memory_restart": "100M",
+    "autorestart": true,
+    "watch": true,
+    "ignore_watch": [
+        "node_modules",
+        "logs",
+        "resources",
+        "backups",
+        "assets",
+        "runtime"
+    ],
+    "max_restarts": 20,
+    "restart_delay": 4050,
+    "命令":"pm2 start pm2.json(启动) pm2 stop all (停止) pm2 delete all(删除历史记录,新的配置前需要移除旧有配置文件)"
+}

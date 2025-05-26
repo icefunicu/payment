@@ -1,0 +1,28 @@
+{
+    "editor.fontFamily": "Cascadia Mono,Consolas, 'Courier New', monospace",
+    "editor.fontSize": 14,
+    "editor.codeLens": true,
+    "editor.columnSelection": false,
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": false,
+    
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "node_modules": true,
+        "**/_runtime_": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/runtime": true
+        
+    },
+    
+
+}

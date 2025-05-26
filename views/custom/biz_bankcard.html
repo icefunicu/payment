@@ -1,0 +1,96 @@
+{% extends './biz_base_layout.html' %}
+{% block content %}
+<h2>提现账户</h2>
+<form action="" class="post-form" autocomplete="off" spellcheck="false" method="post">
+
+    <div class="form-group">
+        <label for="demo-select">账户类型:</label>
+        <select class="form-control" onchange="tChange(this)" name="accc_type">
+            <option value="alipay">支付宝</option>
+            <option value="wxpay">微信</option>
+            <option value="banks">银行卡</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>收款人姓名:</label>
+        <input type="text" class="form-control" name="name" placeholder ="请输入收款账户">
+    </div>
+
+    <div class="form-group">
+        <label>身份证号:</label>
+        <input type="text" class="form-control" name="idcard" placeholder ="请输入收款人身份证号">
+    </div>
+
+    <div class="form-group">
+        <label>预留手机:</label>
+        <input type="text" class="form-control" name="phone" placeholder ="请输入收款账户">
+    </div>
+
+    <div class="form-group">
+        <label>请输入收款账户:</label>
+        <input type="text" class="form-control" name="account" placeholder ="请输入收款账户">
+    </div>
+
+    
+    <div class="form-group" style="display: none;" id="bank-names">
+        <label>请选择银行:</label>
+        <select class="form-control"  name="bankName">
+            {%for code,text in banks%}
+            {%if loop.index>2 %}
+            <option value="{{code}}">{{text}}</option>
+            {%endif%}
+            {%endfor%}
+        </select>
+    </div>
+    <div class="col-sm-12">
+        <button type="button" class="btn btn-primary btn-post"><i class="fa fa-save"></i> 保存设置</button>
+    </div>
+</form>
+
+<div>&nbsp;</div>
+<table class="table table-bordered table-striped table-hover text-center">
+    <thead>
+        <tr>
+            <th>账户类型</th>
+            <th>收款人姓名</th>
+            <th>预留手机</th>
+            <th>身份证号</th>
+            <th>收款账户</th>
+            <th>开户行</th>
+            <th>状态</th>
+            <th>管理</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for d in data%}
+        <tr>
+            <td>{%if d.accc_type == 'alipay' %}支付宝{%elif d.accc_type == 'wxpay'%}微信{%else%}银行卡{%endif%}</td>
+            <td>{{d.name}}</td>
+            <td>{{d.phone}}</td>
+            <td>{{d.idcard}}</td>
+            
+            <td>{{d.account}}</td>
+            <td>{%for code,text in banks%}{%if d.bankName == code%}{{text}}{%endif%}{%endfor%}</td>
+            <td>{{d.accc_state}}</td>
+            <td><a class="btn btn-danger btn-xs btn-in-td" href="javascript:;" onclick="xRemove('{{d._id}}')"><i class="fa fa-trash"></i>删除</a></td>
+        </tr>
+        {%endfor%}				
+    </tbody>
+</table>
+<script>
+    function tChange(self){ 
+        self.value=='banks'?$('#bank-names').show():$('#bank-names').hide();
+    }
+    function xRemove(did){
+        alert("确认删除该账户 ? ",function(){
+                ajax('',{type:'drop',did:did},function(res){
+                    tip(res.message)
+                    if(res.success){
+                        window.location.reload();
+                    } 
+                })
+            });       
+    }
+</script>
+{% endblock %}

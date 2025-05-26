@@ -1,0 +1,26 @@
+
+<form action="/gateway/order" method="post">
+    <input type="text" name="pid" value="tWZQzmidAa"><br/>
+    <input type="text" name="action" value="SN20101"><br/>
+
+    <input type="text" name="trade_no" value="" id="trade_no"><br/>
+    <input type="text" name="trade_money" value="150"><br/>
+
+    <input type="text" name="notify_url" value="http://www.qq.com/notify_url"><br/>
+    <input type="text" name="return_url" value="http://www.qq.com/return_url"><br/>
+
+    <input type="text" name="sign" value="123456789">
+
+    <button type="submit">购买</button>
+    <script>
+        function randomString(e) {    
+            e = e || 32;
+            var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+            a = t.length,
+            n = "";
+            for (i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+            document.getElementById('trade_no').value = n;
+        }
+        randomString(12)
+    </script>
+</form>

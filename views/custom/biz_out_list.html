@@ -1,0 +1,57 @@
+{% extends './biz_base_layout.html' %}
+{% block content %}
+
+<h2>提现记录</h2>
+<div class="jqGrid_wrapper">
+    <table id="jqGridList"></table>
+    <div id="jqGridPager"></div>
+</div>
+<script type="text/javascript">
+    function revOrder(val){
+        var did = $(val).data('did');
+        alert('确认撤销提现申请?',function(){
+            ajax('', {type:'revo',did:did}, function(res){
+                    if(res.success){
+                        tip(res.message);
+                        window.location.reload();
+                    }else{
+                        tip(res.message,3);
+                    }
+            })
+        })
+    }
+    $(function () {
+        $("#jqGridList").jqGrid({
+            url: "",
+            sortable:false,
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['订单号', '金额','手续费', '时间', '收款人', '收款账号','信息', '状态', '管理'],
+            colModel: [
+                { name: 'orderId', sortable: false },
+                { name: 'money', sortable: false, formatter: function (val) { return money(val) } },
+                { name: 'draw.deduction', sortable: false, formatter: function (val) { return money(val) } },
+                { name: 'times.append', sortable: false, formatter: function (val) { return dateTime(val) } },
+                { name: 'account.name', sortable: false },
+                { name: 'account.account', sortable: false },
+                { name: 'message', sortable: false },
+                { name: 'state', sortable: false },
+                {
+                    name: '_id', sortable: false, formatter: function (val,x,row) {
+                        if(row.end){return '-'}
+                        return '<button data-did="'+val+'" onclick="revOrder(this)" type="button" class="btn btn-xs btn-primary">撤销申请</button>'
+                    }
+                },
+            ],
+            rownumbers:true,
+            viewrecords: true,
+            autowidth: true,
+            height: "100%",
+            rowNum:15,
+            rownumWidth: 35, // the width of the row numbers columns
+            pager: "#jqGridPager",//分页控件的id
+            subGrid: false//是否启用子表格
+        });
+    })
+</script>
+{% endblock %}

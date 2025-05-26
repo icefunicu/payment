@@ -1,0 +1,122 @@
+<div class="ui right vertical sidebar menu theme-sidebar">
+<div>
+
+<button class="circular ui icon button mini gary pull-right theme-setting-close"><i class="icon close"></i></button>
+
+<div class="ui grid">
+  <div class="wide column">通知与主题设置</div>
+</div>
+<div class="ui card fluid">
+  <div class="content">
+    <div class="header">布局选项</div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+
+      <div class="field">
+        <div class="ui toggle checkbox disabled">
+          <input type="checkbox" data-genre="tag-use" checked="checked" disabled="disabled" onchange="save_cfg(this)">
+          <label>开启标签页</label>
+        </div>
+      </div>
+
+      <div class="field">
+
+        <div class="ui toggle checkbox">
+          <input type="checkbox" data-genre="menu-hidden" checked="checked" onchange="save_cfg(this)">
+          <label>菜单可隐藏</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="ui card fluid green">
+  <div class="content">
+    <div class="header">消息通知</div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+
+      <div class="field">
+        <div class="ui toggle checkbox">
+          <input type="checkbox"  data-genre="notice-debt" onchange="save_cfg(this)">
+          <label>支付到账</label>
+        </div>
+      </div>
+
+      <div class="field"> 
+        <div class="ui toggle checkbox">
+          <input type="checkbox" checked data-genre="notice-refund" onchange="save_cfg(this)">
+          <label>申请退款</label>
+        </div>
+      </div>
+
+      <div class="field"> 
+        <div class="ui toggle checkbox">
+          <input type="checkbox" checked data-genre="notice-register" onchange="save_cfg(this)">
+          <label>新用户注册</label>
+        </div>
+      </div>
+
+      <div class="field"> 
+        <div class="ui toggle checkbox">
+          <input type="checkbox" checked data-genre="notice-new-order" onchange="save_cfg(this)">
+          <label>生成新订单</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="ui card fluid">
+  <div class="content">
+    <div class="header">主题</div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+
+      <div class="field">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" data-genre="tag-use" checked="checked" onchange="save_cfg(this)">
+          <label>深色</label>
+        </div>
+      </div>
+
+      <div class="field">
+
+        <div class="ui toggle checkbox">
+          <input type="checkbox" data-genre="menu-hidden" checked="checked" onchange="save_cfg(this)">
+          <label>浅色</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+function save_cfg(self){
+  var genre = $(self).data('genre');
+  
+  $.ajax({
+      url:'{{user.manage}}/setting',
+      data:{property:genre,value:$(self).prop('checked')},
+      error:function(){
+
+      },
+      success:function(res){
+        layout.tip(res.message)
+      },
+      
+  })
+}
+</script>
+
+ 
+</div>
+<p>&nbsp;</p>
+</div>

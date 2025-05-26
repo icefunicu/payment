@@ -1,0 +1,68 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+
+{% block content %}
+
+<div class="ui grid">
+<div class="eight column row">
+  <div class="column">{{ forms.src_text('title',__('news.title')) }}</div> 
+ 
+  <div class="column">
+    <button class="ui teal button mini search-button" ><i class="search icon"></i>{{__('fields.search')}}</button>
+  </div>
+</div>
+</div>
+<div class="ui grid">
+  <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+</div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    $('.search-button').on('click',function(){
+        $table.Reload({title:$('[name="title"]').val()});
+    })
+ 
+
+    var columnDefs = [
+      { field: "title", header: "{{__('news.title')}}"},
+      { header: "{{__('news.type')}}",field:'type'}, 
+      { header: "{{__('fields.author')}}",field:'author'}, 
+      {
+        field: "add", header: "{{__('fields.append-time')}}",  formater: function (val) {
+          return sals.date(val);
+        }
+      },
+      {field:"user",header:"{{__('news.type-c')}}"},
+      {
+        field: "row-handle", header: "{{__('fields.handle')}}", width: '500px',handle: [
+          {
+            text: "{{__('fields.edit')}}", class: 'ui button mini yellow', icon: 'icon edit', action: function (row) { 
+              top.layout.TabPage.AddPage("{{__('news.new-edit')}}", '{{user.manage}}/news/append?type=edit&did=' + row._id, 'icon edit');
+            }
+          },
+          {
+            text: "{{__('fields.remove')}}", class: 'ui button mini red', icon: 'icon remove', action: function (row) { 
+              top.layout.confirm("{{__('fields.remove-confirm')}}:"+row.title,function(res){
+                if(res){
+                    sals.post('',{type:'remove',did:row._id},function(res){
+                        if(res.success){
+                            top.layout.tip(res.message);
+                            $table.Reload();
+                        }else{
+                            top.layout.notify(res.message, { class: 'error' });
+                        }
+                    })
+                }
+            })
+            }
+          }
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs,function(res){
+        $table.AddHtml('<div class="disabled item">总:'+res.total+' 条</div>');
+    });
+    $table.LoadData(window.location.href);
+  })
+</script>
+{%endblock%}

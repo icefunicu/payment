@@ -1,0 +1,139 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+{% import "../shared/forms.html" as forms %}
+
+<h2 class="ui header">新增支付渠道</h2>
+ 
+
+<form class="ui form post-form" action="" method="post" autocomplete="off" spellcheck="false">
+
+    {{ forms.hidden('type','add') }}
+
+    {{ forms.text('channel-name','渠道名称',data['channel-name'],'如:支付宝扫码,微信转账',help='可任意填写,与上游无关,展示给商户使用') }}
+   
+    {{ forms.text('channel-charge','基础费率',data['site-name'],'如:2.5,代表每笔交易收取2.5%手续费') }}
+
+    {{ forms.text('channel-time','订单时间(秒)',data['channel-time'],'订单有效期,超出后认定为超时,超时订单不可支付',help='只在使用本系统产码时有效,根据用户量 存码数,酌情调整') }}
+
+    {{ forms.select('channel-page','展示方式',['扫码','唤醒手机APP','转账','上游处理','图片链接']) }}
+
+    {{ forms.select('channel-app','扫码软件',['支付宝','微信','翼支付','云闪付','QQ扫码','手机QQ','盛付通','手机银行','网银转账']) }}
+    
+    {{ forms.textarea('channel-desc','备注信息','','渠道备注信息,商户后台不显示') }}
+
+    {% include '../shared/components/slot_submit.html' %}
+
+</form>
+
+<P>&nbsp;</P>
+<div class="ui stackable cards">
+{% for channel in data%}
+    <div class="card"> 
+        {%if channel['channel-used'] =='true'%}<div class="floating ui green label mini" style="z-index: 9;">启用中</div> 
+        {%else%}<div class="floating ui red label mini" style="z-index: 9;">已停用</div>{%endif%}
+        <div class="content">
+            <div class="header">{{channel['channel-name']}} <span class="right floated extra">默认费率:{{channel['channel-charge']}}%</span> </div>
+            <div class="content">   
+            <p></p>
+            <p>展示方式:<span class="ui label green mini basic">{{channel['channel-page']}}</span> <span class="right floated extra">软件:<span class="ui label green mini basic">{{channel['channel-app']}}</span></span> </p>
+            <p>渠道代码:<span class="ui label red mini">{{channel['channel-code']}}</span> <span class="right floated extra"><span>超时:{{channel['channel-time']}}秒</span></span></p>
+            <p>默认渠道:</p>
+            <div class="ui label mini red" style="margin: 4px;">
+                {{channel['channel-default'].text}}
+                <div class="detail">{{channel['channel-default'].gName}}</div>
+              </div>
+
+            <p>映射渠道:</p>
+            {%for g in channel['channel-gateways']%}
+            <div class="ui label mini teal" style="margin: 4px;">
+                {{g.text}}
+                <div class="detail">{{g.gName}}</div>
+              </div> 
+            {%endfor%}  
+        </div>
+        </div>
+        <div class="extra content">
+            {{channel['channel-desc']}}
+        </div>
+        <div class="extra content">
+            <div class="ui four buttons mini" data-data="{did:'{{channel['_id']}}',used:{{channel['channel-used']}},name:'{{channel['channel-name']}}',code:'{{channel['channel-code']}}'}">
+              <div class="ui basic teal button btn-channel">渠道</div>
+              <div class="ui basic yellow button btn-rotate">轮换</div>
+              
+              {%if channel['channel-used'] =='true'%}
+              <div class="ui basic pink button btn-start-stop">停用</div>
+              {%else%}
+              <div class="ui basic green button btn-start-stop">启用</div>
+              {%endif%}
+              <div class="ui basic red button btn-remove">删除</div>
+            </div> 
+          </div>
+    </div> 
+{%endfor%}
+  </div>
+  {{ forms.tip('渠道名称可任意填写',icon='help',color='yellow') }}
+  <script type="text/javascript">
+    sals.use(['ajaxForm'],function(){
+        $('form.post-form').ajaxForm({
+            complete:function(){
+                $('.profile-save').removeClass('loading');
+                $('form.post-form').removeClass('loading');
+            },
+            error: function (data) {
+                top.layout.notify(data.statusText, { title: data.status, class: 'error' });
+            },
+            success: function (res) { 
+                if (res.success) {
+                    top.layout.tip(res.message);
+                    window.location.reload();
+                } else {
+                    top.layout.notify(res.message, { class: 'error' });
+                }
+            }
+        });
+        $('.btn-remove').on('click',function(){
+            //删除渠道
+            var data =(new Function("return  " + $(this).parent('div').data('data') ))(); 
+            top.layout.confirm('确认删除:'+data.name,function(res){
+                if(res){
+                    sals.post('',{type:'remove',did:data.code},function(res){
+                        if(res.success){
+                            top.layout.tip(res.message);
+                            window.location.reload();
+                        }else{
+                            top.layout.notify(res.message, { class: 'error' });
+                        }
+                    })
+                }
+            })
+        });
+        $('.btn-start-stop').on('click',function(){
+            //启用 停用
+            var data =(new Function("return  " + $(this).parent('div').data('data') ))();
+            top.layout.confirm((data.used?'确认停用:':'确认启用:')+data.name,function(res){
+                if(res){
+                    sals.post('',{type:'start-stop',did:data.code,used:!data.used},function(res){
+                        if(res.success){
+                            top.layout.tip(res.message);
+                            window.location.reload();
+                        }else{
+                            top.layout.notify(res.message, { class: 'error' });
+                        }
+                    })
+                }
+            })
+        });
+        $('.btn-channel').on('click',function(){
+            //渠道绑定
+            var data =(new Function("return  " + $(this).parent('div').data('data') ))();
+            top.layout.Page('{{user.manage}}/gateway/channel-bound?did=' + data.did, '渠道绑定:'+data.name,'',true,'tiny' );
+        });
+        $('.btn-rotate').on('click',function(){
+            //渠道轮换
+            var data =(new Function("return " + $(this).parent('div').data('data') ))();
+            top.layout.Page('{{user.manage}}/gateway/channel-rotate?did=' + data.did, '接口轮换:'+data.name );
+        });
+    });
+</script>
+{%endblock%}

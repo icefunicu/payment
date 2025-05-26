@@ -1,0 +1,98 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+
+{% block content %}
+<h2 class="ui header">{{__('pages.title.out-order-manage')}}</h2>
+
+<div class="ui grid">
+<div class="eight column row">
+  <div class="column">{{ forms.src_text('mbr-account', '订单号' ) }}</div>
+  <div class="column">{{ forms.src_dropdown('on-used',['全部状态','新生','已付款','付款并通知','异常']) }}</div>
+  <div class="column">{{ forms.src_text('mbr-web-site','商户') }}</div>
+  <div class="column">{{ forms.src_dropdown('on-used',['全部渠道','支付宝','微信','银行卡','手动转账']) }}</div>
+  <div class="column">
+    <button class="ui teal button mini search-button" ><i class="search icon"></i>{{__('fields.search')}}</button>
+  </div>
+</div>
+</div>
+<div class="ui grid">
+  <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+</div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    $('.search-button').on('click',function(){
+        $table.Reload({
+          acc:$('[name="mbr-account"]').val(),
+          use:$('[name="on-used"]').val(),
+          web:$('[name="mbr-web-site"]').val()});
+    })
+ 
+    var columnDefs = [
+      
+      { field: "orderId", header: "{{__('pages.order-number')}}"},
+      { header: "{{__('pages.text.order-money-mini')}}",formater:function(val,row){
+          return '{{__("pages.text.order-money-submit")}}:'+ sals.money(row['money'])+'<br/>{{__("pages.gateway.charge")}}:'+sals.money(row['draw']['deduction'])+' {{__("pages.gateway.rate")}}:'+ (row['draw']['settle'])+"%";
+      } },
+      { header: "{{__('pages.text.number')}}",formater:function(val,row){
+          return row['user']+'<br/>'+'{{__("fields.account")}}:'+row['acc']
+      } },
+      {
+          header: "{{__('pages.time.time')}}",  formater: function (val,row) {
+          return '{{__("pages.time.add")}}:'+sals.date(row['times']['append'])+'<br/>{{__("pages.time.payed")}}:'+sals.date(row['times']['payed'])+'</br>{{__("pages.time.notify")}}:'+sals.date(row['times']['notify']);
+        }
+      },
+      {
+        header:"{{__('pages.out.account')}}",formater:function(val,row){
+          return "{{__('pages.out.name')}}:"+row['account']['name']+
+          "<br/>{{__('pages.out.type')}}:"+row['account']['accc_type_text']+
+          "<br/>{{__('pages.out.account')}}:"+row['account']['account']
+        }
+      },
+      {field:'state', header:"{{__('pages.order.state')}}"},
+      {field:'message', header:"{{__('pages.order.info')}}"},
+      {
+        field: "row-handle", header: "{{__('grid.handle')}}", width: '500px',handle: [
+          {
+            text: "{{__('modal.agree')}}", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) { 
+               top.layout.confirm('{{__("pages.agree-help")|safe}}',function(str){
+                  if(str){
+                    sals.post('',{type:'agree',did:row._id},function(res){
+                    if(res.success){
+                        top.layout.tip(res.message);
+                        $table.Reload();
+                    }else{
+                        top.layout.notify(res.message, { class: 'error' });
+                    }
+                  })
+                  }
+              })
+            }
+          }
+          ,
+          {
+            text: "{{__('modal.turn-down')}}", class: 'ui button mini red', icon: 'icon edit', action: function (row) {
+              top.layout.prompt('{{__("pages.turn-down-help")|safe}}:',function(str){
+                  sals.post('',{type:'rejected',did:row._id,info:str},function(res){
+                    if(res.success){
+                      top.layout.tip(res.message);
+                      $table.Reload();
+                    }else{
+                      top.layout.notify(res.message, { class: 'error' });
+                    }
+                  })
+              })
+            }
+          }
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs,function(res){
+      $table.AddHtml('<div class="disabled item">{{__("grid.data.total")}}:'+res.total+' {{__("grid.data.count")}}</div>');
+    })
+    $table.LoadData(window.location.href); 
+    
+    
+  })
+</script>
+{%endblock%}

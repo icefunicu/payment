@@ -1,0 +1,98 @@
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="header"><i class="icon bitcoin secret ui teal"></i> {{__('layout.caption')}}</li>
+            <li >{# 默认首页 #}
+                <a data-href="{{ home.url}}" href="javascript:;">
+                    <span><i class="{{ home.icon}}"></i> {{ home.title}}</span> 
+                    {%- if home.tip -%}{{ home.tip | safe}}{%-endif-%}
+                </a>
+            </li> 
+            {%- for $first in menu -%}
+            {%- if $first.header -%}
+            <li class="header">{# 菜单分栏 #}
+                <span><i class="{{$first.icon | safe}} icon"></i> {{$first.text}}</span>
+                {%- if $first.tip-%}{{$first.tip| safe}}{%-endif-%}
+            </li>
+            {%-else-%}
+            {# 实际菜单 #}
+            {%- if $first.children -%}
+            <li class="treeview">
+                {%if not $first.hidden %}
+                <a data-href="{{$first.page}}" data-title="{{$first.text}}" data-close="{{$first.close}}" data-icon="{{$first.icon}}"  href="javascript:;">
+                    <i class="icon angle right pull-right"></i>
+                    <span><i class="{{$first.icon}} icon"></i> {{$first.text}}</span>
+                    {%- if $first.tip-%}{{$first.tip | safe}}{%- endif-%}
+                </a>{%endif%}
+                <ul class="treeview-menu" style="display: none;">
+                    {%- for $second in $first.children -%} {# 多级菜单 最大 3 级 #}
+                    {%- if $second.children-%}
+                    <li>
+                        
+                        <a data-href="{{$second.page}}" href="javascript:;" data-title="{{$second.text}}" data-close="{{$second.close}}" data-icon="{{$second.icon}}">
+                            <span><i class="{{$second.icon| safe}} icon"></i> {{$second.text}}</span>
+                            <i class="icon angle right pull-right"></i>
+                            {%- if $second.tip -%}{{$second.tip|safe}}{%-endif-%}
+                        </a> 
+                        <ul class="treeview-menu">
+                            {%- for $third in $second.children -%}
+                            {%- if $third.children -%}
+                            <li>
+                                <a data-href="{{$third.page}}" href="javascript:;" data-title="{{$third.text}}" data-close="{{$third.close}}" data-icon="{{$third.icon}}">
+                                    <i class="{{$third.icon| safe}} icon"></i> {{$third.text}}
+                                    <i class="icon angle right pull-right"></i>
+                                    {%- if $third.tip -%}{{$third.tip | safe}}{%-endif-%}
+                                </a>
+                                <ul class="treeview-menu">
+                                    {%- for $fourth in $third.children-%}
+                                    <li>
+                                        <a data-href="{{$fourth.page}}" href="javascript:;" data-title="{{$fourth.text}}" data-close="{{$fourth.close}}" data-icon="{{$fourth.icon}}">
+                                            <span><i class="icon {{$fourth.icon| safe}}"></i> {{$fourth.text}}</span>
+                                            {%- if $fourth.tip -%}{{$fourth.tip|safe}}{%-endif-%}
+                                        </a>
+                                    </li>
+                                    {%- endfor -%}
+                                </ul>
+                            </li>
+                            {%-else-%}
+                            <li>
+                                <a data-href="{{$third.page}}" href="javascript:;" data-title="{{$third.text}}" data-close="{{$third.close}}" data-icon="{{$third.icon}}">
+                                    <span><i class="icon {{$third.icon| safe}}"></i> {{$third.text}}</span>
+                                    {%- if $third.tip -%}{{$third.tip|safe}}{%-endif-%}
+                                </a>
+                            </li>
+                            {%-endif-%}
+                            {%- endfor -%}
+                        </ul>
+                    </li>
+                    {%-else-%}
+                    <li>
+                        <a data-href="{{$second.page}}" href="javascript:;" data-title="{{$second.text}}" data-close="{{$second.close}}" data-icon="{{$second.icon}}">
+                            <span><i class="icon {{$second.icon| safe}}"></i> {{$second.text}}</span>
+                            {%- if $second.tip -%}{{$second.tip|safe}}{%-endif-%}
+                        </a>
+                    </li>
+                    {%-endif-%}
+                    {%- endfor -%}
+                </ul> 
+            </li>
+            {%-else-%}
+            {%if not $first.hidden %}
+            <li>{# 只有一级 #}
+                <a data-href="{{$first.page}}" href="javascript:;" data-title="{{$first.text}}" data-close="{{$first.close}}" data-icon="{{$first.icon}}">
+                    <span><i class="{{$first.icon| safe}} icon"></i> {{$first.text}}</span>
+                    {%- if $first.tip -%}{{$first.tip|safe}}{%-endif-%}
+                </a>
+            </li>{%-endif-%}
+            {%-endif-%}
+            {%-endif-%}
+            {%- endfor -%} 
+        </ul>
+    </section>
+    <section class="main-menu-bar">
+        <span class="popup-tool" data-content="打开首页" onclick="window.open('/')" data-variation="mini"><i class="icon home"></i></span>
+        <span class="popup-tool" data-content="刷新网站" onclick="layout.confirm('将刷新主页面,重新加载网站?',function(res){res&&window.location.reload()})" data-variation="mini"><i class="sync alternate icon"></i></span>
+        <span class="button-lock-layout popup-tool" data-content="锁定界面" data-variation="mini"><i class="lock icon"></i></span>
+        <span class="popup-tool" data-content="帮助中心" onclick="layout.Page('/pages/admin-help.html','帮助中心')" data-variation="mini"><i class="icon exclamation circle"></i></span>
+    </section>
+</aside>

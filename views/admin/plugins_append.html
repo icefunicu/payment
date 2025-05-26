@@ -1,0 +1,33 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+{% import "../shared/forms.html" as forms %}
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+
+{{ forms.file('-null-','插件程序', '',placeholder='插件程序包') }}
+
+{{ forms.hidden('plugs','') }}
+
+
+{% include '../shared/components/slot_submit.html' %}
+<div class="ui teal message">
+    <ul>
+        <li>插件程序包以zip形式打包好后,由此上传到系统,每个插件由单独文件夹形式存储到系统</li>
+        <li>每个插件必须包含index.js文件作为插件入口文件</li>
+        <li>插件中如果包含独立界面,需要将模板文件放置在index.js同一个目录下</li>
+    </ul>
+</div>
+</form>
+<script type="text/javascript">
+    sals.use(['ajaxForm',  'uploader'], function () {
+        $('.upload').click(function(){
+                var $this = $(this);
+                sals.uploader(function (files) {
+                    if (files) {
+                        $('input[name="plugs"]').val(files[0].path)
+                        $this.val(files[0].originalname)
+                    }
+                })
+            })
+    })
+</script>
+{%endblock%}

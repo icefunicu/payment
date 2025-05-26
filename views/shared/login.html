@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="height: 100%;width: 100%;">
+<head>
+    <meta charset="utf-8" />
+    <script>if(this != top){ top.location.replace(this.location.href) }</script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>{{__('layout.title')}}-{{__('layout.system.ver')}}</title>
+    <meta name="description" content="{{__('layout.title')}}" />
+    <meta name="keywords" content="{{__('layout.title')}}" />
+    <link rel="stylesheet" type="text/css" href="/public/css/semantic.min.css" /> 
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script> 
+    <script type="text/javascript" src="/public/js/jquery.form.js"></script>
+</head>
+
+<body style="height: 100%;width: 100%;overflow: hidden;">
+<div style="position: absolute;z-index: 10; top: 0;left: 0;width: 100%;height: 100%;">
+  {# 背景图 或者 背景视频 #}
+  <img src="{{bg_image}}" style="width: 100%;height: 100%;object-fit: fill;">
+  {#
+  <video style="width: 100%;height: 100%;object-fit: fill;" autoplay="autoplay" loop="loop"  muted="muted" ref="video" disablePictureInPicture="true" controls="none">
+    <source src="https://prod-streaming-video-msn-com.akamaized.net/b9614d22-e2ed-4689-becb-265d3d831c47/608d6881-b9a5-4ea9-aa8d-165bae3f43ec.mp4" />
+  </video>
+  #}
+</div>
+<div style="position: absolute;z-index: 100; top: 0;left: 0;width: 100%;height: 100%;background-color:#fff;opacity: 0.24; "></div>
+<div style="position: absolute;z-index: 200; top: 0;left: 0;width: 100%;height: 100%;background:none; "> 
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <div  class=" segment piled  medium centered ui " style="width: 500px;margin: 100px auto;">
+          <h2 class="ui teal image header">
+            <div class="content">{{__('layout.title')}} {{__('layout.system.ver')}}</div>
+        </h2>
+      <form class="ui large form" method="post" autocomplete="off" spellcheck="false">
+        <div class="ui stacked  ">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" value="{{user.account}}" name="{{code}}email" tabindex="1" autofocus="autofocus" spellcheck="false" maxlength="30" autocomplete="off" placeholder="{{__('input.admin.account')}}" />
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" value="{{user.password}}" tabindex="2" name="{{code}}password" spellcheck="false" maxlength="30" placeholder="{{__('input.password')}}" />
+            </div>
+          </div> 
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="keyboard icon"></i>
+              <input type="text" value="" name="{{code}}captcha" tabindex="3" spellcheck="false" autocomplete="off" maxlength="10" placeholder="{{__('input.auth-code')}}" />
+              <div><img src="/cgi-bin/captcha" class="captcha image small centered ui" title="{{__('input.auth-code-refresh')}}" /></div>
+            </div>
+          </div>
+          
+          <button class="ui fluid large teal submit button" type="submit" role="button" tabindex="4"  >{{__('input.login-in')}}</button>
+        </div>
+        
+      </form> 
+      <div class="ui red message mini hidden"></div> 
+      <p>&nbsp;</p>
+      
+    </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    window.localStorage.removeItem('greet-sidebar');
+    $('img.captcha').hover(function(){$(this).css('cursor','pointer')}).click(function(){$(this).attr({src:"/cgi-bin/captcha?_="+Math.random()})})
+    $('form').ajaxForm({
+      beforeSubmit :function(){
+        $('div.message').text('').hide();
+      },
+      success:function(res){
+      if(res.success){
+        window.location.replace(res.home);
+      }else{
+        $('div.message').text(res.message).show();
+      }
+    }})
+  </script>
+  </div>
+</body>
+</html>

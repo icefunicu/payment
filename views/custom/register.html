@@ -1,0 +1,77 @@
+{% extends './login-layout.html' %}
+
+{% block content %}
+
+<section class="content">			
+	<div class="register-box">
+		<div class="register-box-body">
+			<div class="login-logo">
+				<span>注册新用户</span>
+			</div>
+			<hr>
+			<p class="login-box-msg hidden"></p>
+		
+			<form method="post" autocomplete="off" spellcheck="false">
+				<div class="form-group has-feedback">
+					<input type="text" class="form-control" name="user-email" placeholder="邮箱">
+					<span class="fa fa-envelope form-control-feedback"></span>
+				  </div>
+			  <div class="form-group has-feedback">
+				<input type="text" class="form-control" name="user-nickname" placeholder="昵称">
+				<span class="fa fa-user form-control-feedback"></span>
+			  </div>
+			  <div class="form-group has-feedback">
+				<input type="password" class="form-control" name="user-pwd" placeholder="密码">
+				<span class="fa fa-lock form-control-feedback"></span>
+			  </div>
+			  <div class="form-group has-feedback">
+				<input type="password" class="form-control" name="user-pwd2" placeholder="确认密码">
+				<span class="fa fa-lock form-control-feedback"></span>
+			  </div> 
+
+			  <div class="form-group has-feedback">
+				<input type="text" class="form-control" name="user-code" placeholder="验证码">
+				<img src="/cgi-bin/captcha" class="pull-right captcha"/>
+			</div>
+			  <div class="form-group">
+				   <div class="checkbox checkbox-inline checkbox-primary">
+					<input id="checkbox2" type="checkbox" checked>
+					<label for="checkbox2">
+							已阅读并同意<a href="terms">服务条款</a>
+					</label>
+				</div>
+			  </div>				     
+			  <button type="submit" class="btn btn-primary btn-block btn-flat">注 册</button>
+			</form>
+			<p class="clearfix">&nbsp;</p>
+			<a href="login" class="text-center">返回登陆</a>
+			
+		<p class="pull-right">Copyright &copy; 2013-{{time.getFullYear()}} All rights reserved</p>
+		<p class="clearfix">&nbsp;</p>
+		
+		</div>
+	</div>
+</section>
+</div>
+<script type="text/javascript">
+	window.localStorage.removeItem('greet-sidebar');
+	$('img.captcha').hover(function(){$(this).css('cursor','pointer')}).click(function(){$(this).attr({src:"/cgi-bin/captcha?_="+Math.random()})})
+	$('form').ajaxForm({
+	  beforeSubmit :function(){
+		$('p.login-box-msg').text('').addClass('hidden');
+		if(!$('#checkbox2').prop('checked')){
+			fyAlert.msg('请阅读并同意服务协议',2)
+			return false;
+		}
+	  },
+	  success:function(res){
+	  if(res.success){
+		window.location.replace(res.home);
+	  }else{
+		$('.captcha').attr({src:'/cgi-bin/captcha?_r='+Math.random()})
+		fyAlert.msg(res.message)
+	  }
+	}})
+  </script>
+
+{% endblock%}

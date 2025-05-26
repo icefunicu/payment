@@ -1,0 +1,67 @@
+{% extends '../shared/layout.html' %}
+{% import "../shared/forms.html" as forms %}
+
+{% block content %}
+<h2 class="ui header">{{__('gateway.out-pay-manage')}}</h2>
+
+<div class="ui grid">
+  <div class="sals-grid-table" style="height:80vh; width:100%;"></div>
+</div>
+
+<script type="text/javascript">
+  sals.use(['table'], function () {
+    $('.search-button').on('click',function(){
+        $table.Reload({acc:$('[name="mbr-account"]').val(),use:$('[name="on-used"]').val(),web:$('[name="mbr-web-site"]').val()});
+    })
+ 
+
+    var columnDefs = [
+      
+      { field: "gName", header: "{{__('gateway.app-name')}}"},
+      { header: "{{__('fields.append-time')}}",field:'addTime', formater:function(val,row){
+          return sals.date(val)
+      } },
+      { header: "{{__('gateway.gateway-away')}}",field:'Away' },
+      {header: "{{__('gateway.gateway-ver')}}",field:'Version' },
+      {header: "{{__('gateway.gateway-desc')}}",field:'Describe' },
+      {header: "{{__('gateway.gateway-name')}}",field:'Name' },
+      {
+        field: "row-handle", header: "{{__('fields.handle')}}", width: '500px',handle: [
+          {
+            text: "{{__('gateway.gateway-args-edit')}}", class: 'ui button mini blue', icon: 'icon shield alternate', action: function (row) {
+              top.layout.Page('{{user.manage}}/gateway/out-pay-args?did=' + row._id, '{{__("gateway.gateway-out-pay-args-edit")}}:'+row['gName'] );
+            }
+          },
+          {
+            text: "{{__('gateway.gateway-away-update')}}", class: 'ui button mini yellow', icon: 'icon edit', action: function (row) {
+              top.layout.Page('{{user.manage}}/gateway/out-pay-update?did=' + row._id, '{{__("gateway.gateway-away-update")}}:'+row['gName'] );
+            }
+          },
+          {
+            text: "{{__('fields.remove')}}", class: 'ui button mini red', icon: 'icon delete', action: function (row) {
+                top.layout.confirm('{{__("fields.remove-confirm")}}:'+row['gName'],function(res){
+                    if(res){
+                        sals.post('',{type:'remove',did:row._id},function(res){
+                        if(res.success){
+                            top.layout.tip(res.message);
+                            $table.Reload();
+                        }else{
+                            top.layout.notify(res.message, { class: 'error' });
+                        }
+                    })
+                    }
+                })
+               
+            }
+          }     
+        ]
+      }
+    ];
+    var $table = sals.grid('.sals-grid-table', columnDefs);
+    $table.LoadData(window.location.href,{},function(res){
+        $table.AddHtml('<div class="disabled item">{{__("grid.total")}}</div>'.replace(/%s/gi,res.total));
+    }); 
+    
+  })
+</script>
+{%endblock%}

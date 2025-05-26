@@ -1,0 +1,199 @@
+{# 隐藏输入 #}
+{% macro hidden(name,value) %}
+<input type="hidden" value="{{value|default('')}}" name="{{name}}">
+{% endmacro %}
+
+{# *********** 文本输入 ************************************************ #}
+
+{# 文本输入框 #}
+{% macro text(name,label,value,placeholder,icon='edit',help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <div class="ui left icon input">
+    <input type="text" value="{{value|default('')}}" name="{{name}}" placeholder="{{placeholder|default(label)}}">
+    <i class="{{icon|default('edit')}} icon"></i>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# 多行文本 #}
+{% macro textarea(name,label,value,placeholder,help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <textarea rows="2" name="{{name}}" placeholder="{{placeholder|default(label)}}">{{value|default('')}}</textarea>
+  {%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# *********** 上传文件 ************************************************ #}
+
+{# 图片框 #}
+{% macro image(name,label,value,placeholder,icon='file image',help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <div class="ui left icon input">
+    <input type="text" class="upload isimage" value="{{value|default('')}}" name="{{name}}" placeholder="{{placeholder|default(label)}}">
+    <i class="{{icon|default('file image')}} icon"></i>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# 任意文件 #}
+{% macro file(name,label,value,placeholder,icon='file',help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <div class="ui left icon input">
+    <input type="text" class="upload" value="{{value|default('')}}" name="{{name}}" placeholder="{{placeholder|default(label)}}">
+    <i class="{{icon|default('file')}} icon"></i>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# *********** 时间与日期 ************************************************ #}
+
+{# 日期 #}
+{% macro date(name,label,value,placeholder,icon='calendar',help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <div class="ui calendar date">
+    <div class="ui input left icon">
+      <i class="{{icon|default('calendar')}} icon"></i>
+      <input type="text" value="{{value|default('')}}" placeholder="{{placeholder|default(label)}}" name="{{name}}">
+    </div>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# 时间 #}
+{% macro time(name,label,value,placeholder,icon='calendar',help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <div class="ui calendar time">
+    <div class="ui input left icon">
+      <i class="{{icon|default('calendar')}} icon"></i>
+      <input type="text" value="{{value|default('')}}" placeholder="{{placeholder|default(label)}}" name="{{name}}">
+    </div>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# 时间 + 日期 #}
+{% macro datetime(name,label,value,placeholder,icon='calendar',help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <div class="ui calendar datetime">
+    <div class="ui input left icon">
+      <i class="{{icon|default('calendar')}} icon"></i>
+      <input type="text" value="{{value|default('')}}" placeholder="{{placeholder|default(label)}}" name="{{name}}">
+    </div>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# *********** checkbox radios select * dropdown[用于读取数据] ************************************************ #}
+
+{# 复选框 #}
+{% macro checkbox(name,label,value,checked,help='') %}
+<div class="field">
+  <div class="ui toggle checkbox">
+    <input type="checkbox" name="{{name}}" {%if checked%}checked="checked"{%endif%} tabindex="0" class="hidden">
+    <label>{{label}}</label>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# 单选按钮 #}
+{% macro radios(name,label,values,value,help='') %}
+<div class="fields inline">
+  <label>{{label}}:</label>
+  {%for val in values %}
+  <div class="field">
+    <div class="ui radio toggle checkbox">
+      <input type="radio" name="{{name}}" value="{{val}}" {%if value == val%}checked="checked" {%else%}{%if loop.first and not value %}checked="checked"{%endif%}{%endif%} />
+      <label>{{val}}</label>
+    </div>
+  </div>
+  {%endfor%}
+  {%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# 下拉框 #}
+{% macro dropdown(name,label,values,value,valStr,textStr,help='') %}
+<div class="field">{%if label%}
+  <label>{{label}}:</label>{%endif%}
+  <select class="ui fluid dropdown" name="{{name}}">
+    {%for val in values %}
+    <option value="{{val[valStr]}}" {%if value == val[valStr] %}selected="selected"{%endif%}>{{val[textStr]}}</option>
+    {%endfor%}
+  </select>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+
+{# 下拉框 #}
+{% macro select(name,label,values,value,help='') %}
+<div class="field">
+  <label>{{label}}:</label>
+  <select class="ui fluid dropdown" name="{{name}}"> 
+    {%for val in values %}
+    <option value="{{val}}" {%if val == value%}selected="selected"{%endif%}>{{val}}</option>
+    {%endfor%}
+  </select>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{# *********** 搜索框  ************************************************* #}
+
+{% macro src_text(name,label,value,icon='edit',help='') %}
+<div class="field "> 
+  <div class="ui left icon input mini fluid">
+    <input type="text" value="{{value|default('')}}" name="{{name}}" placeholder="{{ label }}">
+    <i class="{{icon|default('edit')}} icon"></i>
+  </div>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{% macro src_dropdown(name,values,valStr,textStr,help='') %}
+<div class="field"> 
+  <select class="ui fluid dropdown mini" name="{{name}}">
+    <option value="-all-" >全部</option>
+    {%for val in values %}
+    <option value="{{val[valStr]}}" >{{val[textStr]}}</option>
+    {%endfor%}
+  </select>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+
+{% macro src_select(name,values,help='') %}
+<div class="field"> 
+  <select class="ui fluid dropdown mini" name="{{name}}">
+    <option value="-all-" >全部</option>
+    {%for val in values %}
+    <option value="{{val}}" >{{val}}</option>
+    {%endfor%}
+  </select>{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+</div>
+{% endmacro %}
+ 
+
+{# *********** 提示信息  ************************************************* #}
+{% macro tip(text,title,icon,color,help='') %}
+<div class="ui {%if icon %}icon{%endif%} message {{color}}">{%if icon %}
+  <i class="{{icon}} icon"></i>{%endif%}
+  <div class="content">
+    <div class="header">{{title}}</div>
+    <p>{{text}}</p>
+  </div>
+</div>
+{% endmacro %}
+
+
+{# *********** 编辑器  ************************************************* #}
+{% macro editor(name,val,h="320px",help='') %}
+<link href="/editor/quill.snow.css" rel="stylesheet" />
+<textarea style="display: none;" name="{{name}}">{{val}}</textarea>
+<div id="editor-{{name}}" style="height:{{h}};">{{val}}</div>
+{%if help %}<span class="ui mini disabled text" style="font-size:smaller">{{help}}</span>{%endif%}
+<div>&nbsp;</div>
+{% endmacro %}

@@ -1,0 +1,66 @@
+{% extends './biz_base_layout.html' %}
+{% block content %}
+<h2>开设子账号</h2>
+
+<div class="row">
+
+    <form class="post-form" action="" autocomplete="off" spellcheck="false">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">账户昵称:</label>
+                <input type="text" class="form-control" name="mbr-name" value="" placeholder="请输入内容...">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">登录账号:</label>
+                <input type="email" class="form-control" name="mbr-account" value="" placeholder="邮箱格式">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">登录密码:</label>
+                <input type="text" class="form-control" name="mbr-password" value="" placeholder="请输入内容...">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">站点名称:</label>
+                <input type="text" class="form-control" name="mbr-web-site" value="" placeholder="请输入内容...">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">网址:</label>
+                <input type="url" class="form-control" name="mbr-web-url" value="" placeholder="请输入内容...">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">联系电话:</label>
+                <input type="text" class="form-control" name="mbr-phone" value="" placeholder="请输入内容...">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="demo-default">联系QQ:</label>
+                <input type="text" class="form-control" name="mbr-qq" value="" placeholder="请输入内容...">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-primary btn-post"><i class="fa fa-save"></i> 保存设置</button>
+        </div>
+    </form>
+
+</div>
+<fieldset class="lanai-fieldset margin-t-15">
+    <legend><i class="fa fa-info-circle"></i> 使用说明</legend>
+    <div class="well-sm">
+        <p>子账号拥有全部功能,可正常进行支付 提款等功能</p>
+        <p>子账号归属于您的名下,所有订单均可进行分润</p>
+    </div>
+</fieldset>
+<script>
+
+</script>
+{% endblock %}

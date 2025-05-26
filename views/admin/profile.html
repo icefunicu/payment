@@ -1,0 +1,108 @@
+{% extends '../shared/layout.html' %} 
+{% block content %}
+
+<div class="ui grid">
+    <div class="six wide column">
+        <div class="ui raised segment ">
+            <div class="ui segment basic" style="margin: 0 auto;width: 180px;">
+                <img src="{{user.face}}" class="ui image circular small user-portrait" />
+                <div class="ui profilr-portrait" style="position: absolute;bottom: 15px;right: 16px;cursor: pointer;">
+                    <i class="edit icon"></i>
+                </div>
+            </div>
+            
+            <form class="ui form profilr-form" action="" method="POST">
+                <div class="field">
+                  <label>{{__('fields.nickname')}}:</label>
+                  <input type="text" maxlength="20" value="{{user.nickname}}" name="nickname" autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <div class="ui calendar date">
+                        <label>{{__('fields.birthday')}}:</label>
+                        <input type="text" readonly value="{{user.birthday}}" name="birthday" autocomplete="off" class="date">
+                    </div>
+                </div>
+
+                  <div class="field">
+                    <label>{{__('fields.about-me')}}:</label>
+                    <textarea rows="2" maxlength="200" name="about" autocomplete="off">{{user.about}}</textarea>
+                  </div>
+                  <button class="ui teal fluid button profile-save" type="button">{{__('modal.save')}}</button>
+              </form> 
+          </div> 
+    </div>
+    <div class="ten wide column"> 
+        <div class="ui raised segment"> 
+            <div class="ui comments journey">
+                {%for $value in  journeys%}
+                <div class="comment"> 
+                  <div class="content">
+                    <span class="author">{{$value.time|date}}</span>
+                    <div class="text">{{$value.message}}</div>
+                  </div>
+                </div> 
+                {%endfor%}
+              </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    sals.use(['ajaxForm', 'calendar','uploader'], function () {
+
+        $('.profilr-form').ajaxForm({
+            complete:function(){
+                $('.profile-save').removeClass('loading');
+                $('form.post-form').removeClass('loading');
+            },
+            error: function (data) {
+                top.layout.notify(data.statusText, { title: data.status, class: 'error' });
+            },
+            success: function (res) {
+                if (res.success) {
+                    top.layout.tip(res.message);
+                    //{{$同步页面修改 }}
+                    top.layout.UserChange({ nickname: $('input[name="nickname"]').val() });
+                } else {
+                    top.layout.notify(res.message, { class: 'error' });
+                }
+            }
+        })
+        $('.profile-save').on('click', function () {
+            var $this = $(this);
+            if ($this.hasClass('loading')) {
+                return false;
+            }
+            $this.addClass('loading');
+            $('.profilr-form').trigger('submit')
+        });
+
+
+        $('.profilr-portrait').on('click', function () {
+            sals.uploader(function (files) {
+                if (files) {
+                    var img = files[0];
+                    if (img.isImage) {
+                        $.ajax({
+                            type: 'post',
+                            data: { face: img.url, _r: Math.random() },
+                            success: function (res) {
+                                if (res.success) {
+                                    $('img.user-portrait').attr({ 'src': img.url });
+                                    top.layout.UserChange({ face: img.url })
+                                }
+                            }
+                        })
+
+                    }
+                }
+            })
+        });
+    })
+
+
+</script>
+
+
+{%endblock%}

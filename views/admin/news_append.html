@@ -1,0 +1,70 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+{% import "../shared/forms.html" as forms %}
+
+{%if query.type != 'edit' %}
+<h2 class="ui header">{{__('news.new-add')}}</h2>
+{%else%}
+<h2 class="ui header">{{__('news.new-edit')}}</h2>
+{%endif%}
+
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false">
+    {%if query.type == 'edit' %}
+    {{ forms.hidden('data-id',data['_id']) }}
+    {{ forms.hidden('data_edit','edit') }}
+    {%endif%}
+
+    {{ forms.text('title',__('news.title'), data['title']) }}
+
+    {{ forms.select('type',__('news.type'),[__('news.type-a'),__('news.type-b'),__('news.type-c')],data['type']) }}
+ 
+    {{ forms.dropdown('user',__('news.specify-user'),users,data['user'],'_id','mbr-name',help=__('news.specify-user-help')) }}
+
+    {%set html = "html" %}
+    {{ forms.editor(html,data[html]|safe ,help=__('news.html-help')) }}
+
+    {% include '../shared/components/slot_submit.html' %}
+    
+    {{ forms.tip(__('news.page-help'),icon='help',color='yellow') }}
+
+    <script type="text/javascript">
+        sals.use(['ajaxForm', 'editor', 'uploader'], function () {
+            $($('.field')[2]).hide();
+            $($('.field')[1]).change(function(val){
+                if($(this).find('.selection .text').text()=='私信'){$($('.field')[2]).show()}else{$($('.field')[2]).hide()}
+            })
+            var editor = new Quill('#editor-{{html}}', {
+                modules: {
+                    toolbar: {
+                        container: [
+                            ["bold", "italic", "underline", "strike", "image", "link"],
+                            ["blockquote", "code-block"],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                            [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题-----[{ header: [1, 2, 3, 4, 5, 6, false] }]
+                            [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色-----[{ color: [] }, { background: [] }]
+                            ["clean"] // 清除文本格式----- 
+                        ],
+                        handlers: {
+                            'image': function (use) {
+                                if (use) {
+                                    sals.uploader(function (files) {
+                                        if (files) {
+                                            var index = editor.getSelection().index;
+                                            editor.insertEmbed(index, 'image', files[0].url);
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    },
+                },
+                theme: 'snow',
+            });
+            editor.on('text-change', function (val) {
+                $('textarea[name="{{html}}"]').val(editor.root.innerHTML)
+            });
+        });
+    </script>
+</form>
+{%endblock%}

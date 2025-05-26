@@ -1,0 +1,105 @@
+{% extends './biz_base_layout.html' %}
+{% block head %}{% endblock%}
+{% block content %}
+
+<div class="box box-default direct-chat box-solid" >
+     
+    <div class="box-header with-border">
+        <h3 class="box-title"><i class="fa fa-comments"></i>&nbsp;联系客服</h3>
+    </div>
+
+    <div class="box-body no-padding"  >
+        <div class="direct-chat-messages" style="height:400px;padding: 0px 20px;" id="message-box" >
+            <script type="text/template" id="from-message">
+                <div class="direct-chat-msg">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left">{name}</span>
+                        <span class="direct-chat-timestamp pull-right">{time}</span>
+                    </div>
+                    
+                    <img class="direct-chat-img" src="{image}" >
+                    <div class="direct-chat-text bg-olive">{message}</div>
+                </div>
+            </script>
+            <script type="text/template" id="to-message">
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-right">{name}</span>
+                        <span class="direct-chat-timestamp pull-left">{time}</span>
+                    </div>
+                    <img class="direct-chat-img" src="{image}" >
+                    <div class="direct-chat-text bg-light-blue">{message}</div>
+                </div> 
+            </script> 
+        </div>
+        <p>&nbsp;</p>
+        <div class="box-body no-padding"  >
+        <div class="col-sm-12">
+            <textarea class="form-control txt-message" rows="3" placeholder="请输入内容 ..." readonly>在线客服功能暂停使用....</textarea>
+            <button type="button" class="btn btn-default btn-send" disabled><i class="fa fa-paper-plane"></i> 发送</button>
+        </div>
+        <p>&nbsp;</p>
+    </div>
+    </div>
+
+ 
+</div>   
+<div>
+    {%if config['kf-phone']%}<p>客服电话:{{config['kf-phone']}}</p>{%endif%}
+    {%if config['kf-400']%}<p>400电话:{{config['kf-400']}}</p>{%endif%}
+    {%if config['kf-qq']%}<p>客服QQ:{{config['kf-qq']}}</p>{%endif%}
+    {%if config['kf-email']%}<p>客服邮箱:{{config['kf-email']}}</p>{%endif%}
+    {%if config['kf-mobile']%}<p>客服手机:{{config['kf-mobile']}}</p>{%endif%} 
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('.btn-send').on('click',function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var txt = $('textarea.txt-message').val();
+            if(!txt){
+                tip('请输入信息',2);
+                return
+            }
+            top.mxSend(txt);
+            sendMessage(txt,top.USER.avatar,top.USER.name,dateTime(new Date()));
+            $('textarea.txt-message').val('')
+        })
+        var auto_scroll = true;
+        function getMessage(msg,avatar,name,time){
+            var fromMessage = $('#from-message').html();
+            var html = fromMessage.replace(/{message}/gi,msg).replace(/{image}/gi,avatar).replace(/{name}/gi,name).replace(/{time}/gi,time);
+            $('#message-box').append(html);
+            autoScroll();
+        }
+        function sendMessage(msg,avatar,name,time){
+            var toMessage = $('#to-message').html();
+            var html = toMessage.replace(/{message}/gi,msg).replace(/{image}/gi,avatar).replace(/{name}/gi,name).replace(/{time}/gi,time);
+            $('#message-box').append(html);
+            autoScroll();
+        }
+        function autoScroll(){
+            if(auto_scroll){
+                $('#message-box').scrollTop( 999999999 );
+            }
+        }
+        $('#message-box').on('mousewheel',function(event){
+            var delta = (event.originalEvent.wheelDelta && (event.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie
+                (event.originalEvent.detail && (event.originalEvent.detail > 0 ? -1 : 1));              // firefox
+            if (delta > 0) {
+                auto_scroll=false
+            } else if (delta < 0) {
+                auto_scroll=true
+            }
+        })
+        getMessage('暂停使用该功能','/avatar/avatar1.png','系统:',dateTime(new Date()))
+        // setInterval (() => {
+        //     getMessage('收到信息','/avatar/avatar1.png','好队友:','啊实打实的')
+        // }, 2000);
+        // setInterval (() => {
+        //     sendMessage('发送信息','/avatar/avatar1.png','好队友:','啊实打实的')
+        // }, 1500);
+    })
+</script>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends './biz_base_layout.html' %}
+{% block content %}
+<h2>操作日志</h2>
+<div class="jqGrid_wrapper">
+    <table id="jqGridList"></table>
+    <div id="jqGridPager"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#jqGridList").jqGrid({
+            url: "",
+            sortable:false,
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['类型', '金额','时间', '信息'],
+            colModel: [
+                { name: 'type', sortable: false },
+                { name: 'val', sortable: false,formatter:function(val){return money(val)}},
+                { name: 'add', sortable: false, formatter: function (val) { return dateTime(val) } },
+                { name: 'text', sortable: false }
+            ],
+            rownumbers:true,
+            viewrecords: true,
+            autowidth: true,
+            height: "100%",
+            rowNum:10,
+            rownumWidth: 35, // the width of the row numbers columns
+            pager: "#jqGridPager",//分页控件的id
+            subGrid: false//是否启用子表格
+        });
+    })
+</script>
+{% endblock %}

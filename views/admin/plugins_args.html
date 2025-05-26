@@ -1,0 +1,25 @@
+{% extends '../shared/layout.html' %}
+{% block content %}
+
+{% import "../shared/forms.html" as forms %}
+
+<form class="ui form post-form" action="" autocomplete="off" spellcheck="false" method="post">
+
+    {%for arg in data.Args%}
+    {{ forms.text(arg.name,arg.text,arg.val) }}
+    {%endfor%}
+    
+    {% include '../shared/components/slot_submit.html' %}
+
+    <div class="ui message violet">
+
+        {{data.Help|safe}}
+
+    </div>
+    
+    <script type="text/javascript">
+        sals.use(['ajaxForm']);
+    </script>
+</form>
+
+{%endblock%}
